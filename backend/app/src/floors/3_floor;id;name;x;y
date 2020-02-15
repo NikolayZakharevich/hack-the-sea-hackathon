@@ -6,14 +6,14 @@
 306;Sim Product;337;303
 307;;444;228
 308;;511;228
-311;Meeting room;537;404
-312;Meeting room;491;404
-313;Meeting room;534;525
-314;Meeting room;488;525
+311;Переговорка;537;404
+312;Переговорка;491;404
+313;Переговорка;534;525
+314;Переговорка;488;525
 317;;513;636
 318;;513;776
-boy_toilet_top;boy_toilet_top;515;355
-girl_toilet_top;girl_toilet_top;515;325
-cofepoint_3;cofepoint;505;1015
-boy_toilet_bottom;boy_toilet_bottom;505;1100
-girl_toilet_bottom;girl_toilet_bottom;505;1070
+boy_toilet_top_3;Мужской туалет;515;355
+girl_toilet_top_3;Женский туалет;515;325
+cofepoint_3;Кофепоинт;505;1015
+boy_toilet_bottom_3;Мужской туалет;505;1100
+girl_toilet_bottom_3;Женский туалет;505;1070

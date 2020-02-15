@@ -1,15 +1,15 @@
 108;HR;335;305
 107;Web;335;435
 106;Web;335;565
-105;Solutions;335;71
+105;Solutions;335;706
 104;Demorum;335;810
-cofepoint_1;cofepoint;335;885
-girl_toilet_top;girl_toilet_top;520;320
-boy_toilet_top;boy_toilet_top;520;360
-116;sklad_room;500;410
-117;sklad_room;500;470
-118;sklad_room;500;535
-sklad;sklad;500;618
+cofepoint_1;Кофепоинт;335;885
+girl_toilet_top_1;Женский туалет;520;320
+boy_toilet_top_1;Мужской туалет;520;360
+116;Складское помещение;500;410
+117;Складское помещение;500;470
+118;Складское помещение;500;535
+sklad;Склад;500;618
 120;FOS;514;776
-girl_toilet_bottom;girl_toilet_bottom;500;1065
-boy_toilet_bottom;boy_toilet_bottom;500;1095
+girl_toilet_bottom_1;Женский туалет;500;1065
+boy_toilet_bottom_1;Мужской туалет;500;1095
