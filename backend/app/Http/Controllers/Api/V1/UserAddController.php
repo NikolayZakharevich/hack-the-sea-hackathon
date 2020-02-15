@@ -22,8 +22,9 @@ class UserAddController extends Controller {
         $user_floor   = (int)$request->get('floor');
         $user_cabinet = (int)$request->get('cabinet');
         $user_level   = (int)$request->get('level');
+        $photo_url    = (string)$request->get('photo_url');
 
-        $new_user_id = User::create($user_name, $user_surname, $user_floor, $user_cabinet, $user_level);
+        $new_user_id = User::create($user_name, $user_surname, $user_floor, $user_cabinet, $user_level, $photo_url);
         if (!$new_user_id) {
             return response()->json([
                 'response' => 'bad',

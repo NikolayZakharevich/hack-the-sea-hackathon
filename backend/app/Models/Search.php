@@ -16,25 +16,24 @@ class Search {
             $words[$key] = self::toLower($word);
         }
 
-        $users    = User::getAll();
+        $users = User::getAll();
 
         $users_scored = [];
         foreach ($users as $user) {
             $name    = self::toLower($user['name']);
             $surname = self::toLower($user['surname']);
-            $score = self::getScore($surname, $words, 3) + self::getScore($name, $words, 2);
+            $score   = self::getScore($surname, $words, 3) + self::getScore($name, $words, 2);
             if (!$score) {
                 continue;
             }
 
             $users_scored[] = [
                 'score' => $score,
-                'user' => $user,
+                'user'  => $user,
             ];
         }
 
-        usort($users_scored, function($user1, $user2)
-        {
+        usort($users_scored, function($user1, $user2) {
             $a = $user1['score'];
             $b = $user2['score'];
             if ($a == $b) {
