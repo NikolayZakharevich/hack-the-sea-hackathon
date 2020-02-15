@@ -3,6 +3,8 @@ import './App.css';
 import filterIcon from './static/filterIcon.png'
 import routeIcon from './static/routeIcon.png'
 import magniferIcon from './static/magniferIcon.png'
+import FloorLayout from "./components/FloorLayout/FloorLayout";
+import {getCabinet, getFloor} from "./api/floor";
 
 class App extends Component {
     constructor(props) {
@@ -10,12 +12,14 @@ class App extends Component {
         this.state = {
             filtersBlockShown: false,
             roadBlockShown: false,
-            magniferBlockShow: false
+            magniferBlockShow: false,
+            cabinets: null,
         };
 
         this.onClickLeftBlock = this.onClickLeftBlock.bind(this);
         this.onClickRoadIcon = this.onClickRoadIcon.bind(this);
         this.onClickMagniferIcon = this.onClickMagniferIcon.bind(this);
+        this.getCabinets = this.getCabinets.bind(this)
     }
 
     onClickLeftBlock() {
@@ -48,10 +52,23 @@ class App extends Component {
         }
     }
 
+    getCabinets = id => {
+        getFloor(id).then(
+            r => {
+                this.setState({cabinets: r.floor.cabinets})
+            }
+        )
+    };
+
+    componentDidMount() {
+        this.getCabinets(1)
+    }
+
     render() {
         const showFiltersBlock = this.state.filtersBlockShown;
         const showRoadBlock = this.state.roadBlockShown;
         const showMagniferBlock = this.state.magniferBlockShow;
+        const cabinets = this.state.cabinets;
 
         return (
             <div className="App">
@@ -128,7 +145,9 @@ class App extends Component {
                     </div>
                 </div>
                 <div className="officeMap">
-
+                    {cabinets &&
+                        <FloorLayout cabinets={cabinets}/>
+                    }
                 </div>
             </div>
         )

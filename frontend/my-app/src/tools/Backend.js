@@ -31,7 +31,7 @@ export default class Backend {
             .then(r => r.json())
             .then(data => {
                 if (data.response !== undefined) {
-                    return data.response
+                    return data
                 } else if (data.error && data.error.message !== undefined) {
                     return data.error
                 } else {
