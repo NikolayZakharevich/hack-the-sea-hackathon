@@ -27,7 +27,7 @@ class UserAddController extends Controller {
         if (!$new_user_id) {
             return response()->json([
                 'response' => 'bad',
-                'desc'     => 'save result failed',
+                'desc'     => 'save failed',
             ]);
         }
 
