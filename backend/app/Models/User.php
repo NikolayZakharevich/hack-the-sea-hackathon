@@ -25,7 +25,7 @@ class User {
         ];
         $user_serialized = json_encode($user, JSON_UNESCAPED_UNICODE);
 
-        $result = Redis::set(User::getKey($id), $user_serialized);
+        $result = Redis::set(self::getKey($id), $user_serialized);
         return (bool)$result;
     }
 
@@ -41,6 +41,6 @@ class User {
             return null;
         }
 
-        return json_decode($user_serialized);
+        return json_decode($user_serialized, true);
     }
 }

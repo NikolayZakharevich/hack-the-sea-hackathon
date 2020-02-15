@@ -3,30 +3,31 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\Floor;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ApiRequest;
 use App\Http\Requests\App\Action\FloorIndexRequest;
 use App\Http\Requests\App\Action\FloorShowRequest;
-use Redis;
+use App\Models\Floor;
+use App\Models\User;
+use Illuminate\Support\Facades\Redis;
 
-class FloorController extends Controller
-{
+class FloorController extends Controller {
 
-    public function index(FloorIndexRequest $request)
-    {
-        $floors = Floor::all();
+    public function index(ApiRequest $request) {
+        $floors = Floor::getAll();
+
         return response()->json([
-            'response' => $floors
+            'response' => 'ok',
+            'floors' => $floors,
         ]);
     }
 
-    public function show(FloorShowRequest $request, int $id)
-    {
-        $level = $request->get('level'); // или $request->level
-        $floor = Redis::get('floor:'.$id);
+    public function show(ApiRequest $request, int $id) {
+        $floor = Floor::get($id);
 
         return response()->json([
-            'response' => $floor
+            'response' => 'ok',
+            'floor'    => $floor,
         ]);
     }
 }
