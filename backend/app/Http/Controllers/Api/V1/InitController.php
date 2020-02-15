@@ -6,8 +6,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiRequest;
+use App\Models\Cabinet;
 use App\Models\Floor;
 use App\Models\User;
+use Doctrine\DBAL\Schema\Table;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 
 class InitController extends Controller
@@ -16,6 +18,7 @@ class InitController extends Controller
     static $nameToId = [];
     static $cabinetToWorkers = [];
     static $tableIdToPoints = [];
+    static $cabinetIdToType = [];
     static $current_id = 0;
 
     public function parseUserFile(String $file_name, int $level) {
@@ -80,17 +83,27 @@ class InitController extends Controller
         }
     }
 
+
+    public function parseOtherCabinets() {
+        $content = file_get_contents(__DIR__ . "/../../../../src/cabinets/other_cabs");
+        $cabinets = explode("\n", $content);
+
+        foreach ($cabinets as $cabinet) {
+            $test = explode(";", $cabinet);
+            if (sizeof($test) == 3) {
+                list($key_cabs, $floor, $type) = $test;
+                Cabinet::add($key_cabs, $floor, 1, 1, $type, []);
+            }
+        }
+    }
+
     public function parseCabinets() {
         self::parseCabinetFile(__DIR__ . "/../../../../src/cabinets/106_cabinet");
-        info(self::$tableIdToPoints);
-        info(self::$nameToId);
-        info(self::$cabinetToWorkers);
-        foreach (self::$cabinetToWorkers as $key => $cabinets) {
-            info($key);
-            $floor = substr($key, 0, 1);
+        self::parseOtherCabinets();
+        foreach (self::$cabinetToWorkers as $key_cabs => $cabinets) {
+            $floor = substr($key_cabs, 0, 1);
             $level_count = sizeof($cabinets);
-            foreach ($cabinets as $key => $cabinet) {
-                $level = $key;
+            foreach ($cabinets as $level => $cabinet) {
                 shuffle($cabinet);
 
                 $tables_data = [];
@@ -110,25 +123,12 @@ class InitController extends Controller
                         "surname" => $surname,
                         "point_x" => $table["point_x"],
                         "point_y" => $table["point_y"],
-
+                        "id" => $table_id,
+                        "photo_url" => "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
                     ];
                 }
-                info("cabinet:");
-                info("floor = ".$floor);
-                info("level = ".$level);
-                info("level_count = ".$level_count);
-                info($tables_data);
-
-
+                Cabinet::add($key_cabs, $floor, $level, $level_count, "worker_room", $tables_data);
             }
-            /*shuffle($cabinet[1]);
-            info($cabinet);
-            if (sizeof($cabinet) == 1) {
-                info(" 1lvl");
-            } else {
-                info( "2lvl");
-            }
-            self::$cabinetToWorkers[$key] = $cabinet[1];*/
         }
     }
 
@@ -137,6 +137,7 @@ class InitController extends Controller
         self::parseUser();
         self::parseFloors();
         self::parseCabinets();
+        info(self::$cabinetToWorkers);
         return response()->json([
             'response' => 'ok'
         ]);
