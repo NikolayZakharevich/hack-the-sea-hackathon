@@ -12,10 +12,12 @@
 |
 */
 
-Route::resource('/v1/floor', 'Api\V1\FloorController', ['only' => ['index', 'show']]);
-Route::resource('/v1/cabinet', 'Api\V1\CabinetController', ['only' => ['index', 'show']]);
-Route::resource('/v1/user/add', 'Api\V1\UserAddController', ['only' => ['index', 'show']]);
-Route::resource('/v1/user/edit', 'Api\V1\UserEditController', ['only' => ['index', 'show']]);
-Route::resource('/v1/user', 'Api\V1\UserController', ['only' => ['index', 'show']]);
-Route::resource('/v1/cabinet', 'Api\V1\CabinetController', ['only' => 'index']);
-Route::resource('/v1/init', 'Api\V1\InitController', ['only' => 'index']);
+Route::middleware(\App\Http\Middleware\Cors::class)->group(function () {
+    Route::resource('/v1/floor', 'Api\V1\FloorController', ['only' => ['index', 'show']]);
+    Route::resource('/v1/cabinet', 'Api\V1\CabinetController', ['only' => ['index', 'show']]);
+    Route::resource('/v1/user/add', 'Api\V1\UserAddController', ['only' => ['index', 'show']]);
+    Route::resource('/v1/user/edit', 'Api\V1\UserEditController', ['only' => ['index', 'show']]);
+    Route::resource('/v1/user', 'Api\V1\UserController', ['only' => ['index', 'show']]);
+    Route::resource('/v1/cabinet', 'Api\V1\CabinetController', ['only' => 'index']);
+    Route::resource('/v1/init', 'Api\V1\InitController', ['only' => 'index']);
+});
