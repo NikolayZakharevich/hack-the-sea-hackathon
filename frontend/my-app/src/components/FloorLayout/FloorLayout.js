@@ -1,14 +1,8 @@
 import React from 'react';
 import "./FloorLayout.scss"
+import {getFloor} from "../../api/floor";
 
-const FloorLayout = ({h, desktop}) => {
-    let style = {}
-    if (h) {
-        style.minHeight = h
-    }
-    if (desktop) {
-        style.background = '#FFF'
-    }
+const FloorLayout = ({}) => {
     return (
         <svg viewBox="0 0 842 1191">
             <style>

@@ -14,14 +14,15 @@ class User {
         return 'users_counter';
     }
 
-    public static function add($id, $name, $surname, $floor, $cabinet, $level) {
+    public static function add($id, $name, $surname, $floor, $cabinet, $level, $photo_url) {
         $user            = [
-            'id'      => $id,
-            'name'    => $name,
-            'surname' => $surname,
-            'floor'   => $floor,
-            'cabinet' => $cabinet,
-            'level'   => $level,
+            'id'        => $id,
+            'name'      => $name,
+            'surname'   => $surname,
+            'floor'     => $floor,
+            'cabinet'   => $cabinet,
+            'level'     => $level,
+            'photo_url' => $photo_url,
         ];
         $user_serialized = json_encode($user, JSON_UNESCAPED_UNICODE);
 
@@ -29,9 +30,9 @@ class User {
         return (bool)$result;
     }
 
-    public static function create($name, $surname, $floor, $cabinet, $level) {
-        $user_id = Redis::incr(self::getCounterKey());
-        $save_result = self::add($user_id, $name, $surname, $floor, $cabinet, $level);
+    public static function create($name, $surname, $floor, $cabinet, $level, $photo_url) {
+        $user_id     = Redis::incr(self::getCounterKey());
+        $save_result = self::add($user_id, $name, $surname, $floor, $cabinet, $level, $photo_url);
         return $save_result ? $user_id : 0;
     }
 
@@ -42,5 +43,19 @@ class User {
         }
 
         return json_decode($user_serialized, true);
+    }
+
+    public static function getAll() {
+        $users_number = Redis::get(self::getCounterKey());
+
+        $users = [];
+        for ($user_id = 1; $user_id <= $users_number; $user_id++) {
+            $user = self::get($user_id);
+            if ($user) {
+                $users[] = $user;
+            }
+        }
+
+        return $users;
     }
 }
