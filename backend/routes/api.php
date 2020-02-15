@@ -12,6 +12,7 @@
 |
 */
 
+Route::resource('/v1/search', 'Api\V1\SearchController', ['only' => ['index', 'show']]);
 Route::resource('/v1/floor', 'Api\V1\FloorController', ['only' => ['index', 'show']]);
 Route::resource('/v1/cabinet', 'Api\V1\CabinetController', ['only' => ['index', 'show']]);
 Route::resource('/v1/user/add', 'Api\V1\UserAddController', ['only' => ['index', 'show']]);

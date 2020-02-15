@@ -30,7 +30,7 @@ class User {
     }
 
     public static function create($name, $surname, $floor, $cabinet, $level) {
-        $user_id = Redis::incr(self::getCounterKey());
+        $user_id     = Redis::incr(self::getCounterKey());
         $save_result = self::add($user_id, $name, $surname, $floor, $cabinet, $level);
         return $save_result ? $user_id : 0;
     }
@@ -42,5 +42,19 @@ class User {
         }
 
         return json_decode($user_serialized, true);
+    }
+
+    public static function getAll() {
+        $users_number = Redis::get(self::getCounterKey());
+
+        $users = [];
+        for ($user_id = 1; $user_id <= $users_number; $user_id++) {
+            $user = self::get($user_id);
+            if ($user) {
+                $users[] = $user;
+            }
+        }
+
+        return $users;
     }
 }
