@@ -29,7 +29,7 @@ class InitController extends Controller
             if (sizeof($test) == 3) {
                 list($cabinet_id, $surname, $name) = $test;
                 $floor = substr($cabinet_id, 0, 1);
-                User::create($name, $surname, $floor, $cabinet_id, $level);
+                User::create($name, $surname, $floor, $cabinet_id, $level, "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg");
                 self::$nameToId[$name." ".$surname] = self::$current_id++;
                 self::$cabinetToWorkers[$cabinet_id][$level][] =  $name." ".$surname;
             }
@@ -137,10 +137,8 @@ class InitController extends Controller
         self::parseUser();
         self::parseFloors();
         self::parseCabinets();
-        info(self::$cabinetToWorkers);
         return response()->json([
             'response' => 'ok'
         ]);
     }
 }
-
