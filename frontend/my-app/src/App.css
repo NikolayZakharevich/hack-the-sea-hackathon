@@ -1,38 +1,159 @@
-.App {
-  text-align: center;
+* {
+    /*font-family: 'Comfortaa', serif;*/
+    font-size: 18px;
+    font-family: Comfortaa, serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.topPanel {
+    width: 77%;
+    height: 3rem;
+    margin: 5rem auto auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.leftBlock {
+    width: 5rem;
+    /*height: 2rem;*/
+    /*background-image: url(static/filterIcon.svg);*/
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.filter {
+    width: 2rem;
+    height: 2rem;
 }
 
-.App-link {
-  color: #61dafb;
+.filterShown {
+    width: 15rem;
+    background: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bordered {
+    border: black 1px solid;
+    border-radius: 0.5rem;
+    padding: 0.2rem;
 }
+
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.2rem;
+}
+
+.iconSelected {
+    background-color: #01FF35;
+}
+
+.officeMap {
+    width: 80%;
+    height: 50rem;
+    margin: auto;
+    border: black 1px solid;
+    border-radius: 1rem;
+}
+
+.container {
+    display: block;
+    position: relative;
+    padding-left: 2.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0.5rem;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.rightBlock {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.rbTopPanel {
+    width: 25rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: end;
+}
+
+.rbIcons {
+    width: 5rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.rbTitle {
+    margin-top: 0.5rem;
+}
+
+.rbShown {
+    width: 25rem;
+    background: white;
+}
+
+/*@keyframes App-logo-spin {*/
+/*  from {*/
+/*    transform: rotate(0deg);*/
+/*  }*/
+/*  to {*/
+/*    transform: rotate(360deg);*/
+/*  }*/
+/*}*/
