@@ -12,7 +12,9 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+      "ext-redis": "*",
+      "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
