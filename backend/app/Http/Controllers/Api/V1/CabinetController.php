@@ -10,9 +10,11 @@ use App\Models\Cabinet;
 class CabinetController extends Controller {
 
     public function index(ApiRequest $request) {
+        $cabinets = Cabinet::getAll();
+
         return response()->json([
             'response' => 'ok',
-            'desc'     => '/cabinet/{id} to get cabinet description',
+            'cabinets' => $cabinets,
         ]);
     }
 
@@ -20,7 +22,7 @@ class CabinetController extends Controller {
         $cabinet = Cabinet::get($id);
         return response()->json([
             'response' => 'ok',
-            'cabinet'     => $cabinet,
+            'cabinet'  => $cabinet,
         ]);
     }
 }

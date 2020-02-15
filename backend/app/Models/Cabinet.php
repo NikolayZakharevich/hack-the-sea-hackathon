@@ -10,9 +10,14 @@ class Cabinet {
         return 'cabinet' . $user_id;
     }
 
-    public static function add($id, $level, $level_count, $type, $tables) {
+    private static function getSetKey() {
+        return 'cabinets';
+    }
+
+    public static function add($id, $floor, $level, $level_count, $type, $tables) {
         $cabinet            = [
             'id'          => $id,
+            'floor'       => $floor,
             'level'       => $level,
             'level_count' => $level_count,
             'type'        => $type,
@@ -20,8 +25,11 @@ class Cabinet {
         ];
         $cabinet_serialized = json_encode($cabinet, JSON_UNESCAPED_UNICODE);
 
-        $result = Redis::set(self::getKey($id), $cabinet_serialized);
-        return (bool)$result;
+        $result = (bool)Redis::set(self::getKey($id), $cabinet_serialized);
+        if ($result) {
+            Redis::sadd(self::getSetKey(), $id);
+        }
+        return $result;
     }
 
     public static function get($id) {
@@ -31,5 +39,15 @@ class Cabinet {
         }
 
         return json_decode($cabinet_serialized, true);
+    }
+
+    public static function getAll() {
+        $all_cabinets_ids = (array)Redis::smembers(self::getSetKey());
+        $cabinets        = [];
+        foreach ($all_cabinets_ids as $cabinet_id) {
+            $cabinets[] = self::get($cabinet_id);
+        }
+
+        return $cabinets;
     }
 }
