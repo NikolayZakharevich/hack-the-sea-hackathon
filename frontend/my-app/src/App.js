@@ -56,35 +56,37 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="topPanel">
-                    <div className={"leftBlock " + (showFiltersBlock ? "filterShown bordered" : "")} >
+                    <div className={"leftBlock " + (showFiltersBlock ? "filterShown bordered" : "")}>
                         <div onClick={this.onClickLeftBlock}>
-                            <img src={filterIcon} className={"icon bordered " + (showFiltersBlock ? "iconSelected" : "")} alt="filterIcon"/>
+                            <img src={filterIcon}
+                                 className={"icon bordered " + (showFiltersBlock ? "iconSelected" : "")}
+                                 alt="filterIcon"/>
                         </div>
                         {showFiltersBlock &&
-                            <div className="filtersBlock">
-                                <label className="container">Coffee Point
-                                    <input type="checkbox"/>
-                                    <span className="checkmark"></span>
-                                </label>
-                                <label className="container">Bathroom
-                                    <input type="checkbox"/>
-                                    <span className="checkmark"></span>
-                                </label>
-                                <label className="container">Rest Room
-                                    <input type="checkbox"/>
-                                    <span className="checkmark"></span>
-                                </label>
-                            </div>
+                        <div className="filtersBlock">
+                            <label className="container">Coffee Point
+                                <input type="checkbox"/>
+                                <span className="checkmark"></span>
+                            </label>
+                            <label className="container">Bathroom
+                                <input type="checkbox"/>
+                                <span className="checkmark"></span>
+                            </label>
+                            <label className="container">Rest Room
+                                <input type="checkbox"/>
+                                <span className="checkmark"></span>
+                            </label>
+                        </div>
                         }
                     </div>
-                    <div className={"rightBlock " + ((showRoadBlock || showMagniferBlock)? "rbShown bordered" : "")}>
+                    <div className={"rightBlock " + ((showRoadBlock || showMagniferBlock) ? "rbShown bordered" : "")}>
                         <div className="rbTopPanel">
                             <div className="rbTitle">
                                 {showRoadBlock &&
-                                    <span>Route</span>
+                                <span>Route</span>
                                 }
                                 {showMagniferBlock &&
-                                    <span>Search</span>
+                                <span>Search</span>
                                 }
                             </div>
                             <div className="rbIcons">
@@ -99,31 +101,31 @@ class App extends Component {
                             </div>
                         </div>
                         {showRoadBlock &&
-                            <div className="roadBlock">
-                                <div className="fromField inputField">
-                                    <input placeholder="from:"/>
-                                </div>
-                                <div className="toField inputField">
-                                    <input placeholder="to:"/>
-                                </div>
-                                <div className="additionalParameters">
-                                    <div className="additionalParam"></div>
-                                    <div className="additionalParam"></div>
-                                </div>
-                                <div className="sendBtn">
-                                    Go
-                                </div>
+                        <div className="roadBlock">
+                            <div className="fromField inputField">
+                                <input placeholder="from:"/>
                             </div>
+                            <div className="toField inputField">
+                                <input placeholder="to:"/>
+                            </div>
+                            <div className="additionalParameters">
+                                <div className="additionalParam"></div>
+                                <div className="additionalParam"></div>
+                            </div>
+                            <div className="sendBtn">
+                                Go
+                            </div>
+                        </div>
                         }
                         {showMagniferBlock &&
-                            <div className="magniferBlock">
-                                <div className="inputField">
-                                    <input placeholder="What are you looking for?"/>
-                                </div>
-                                <div className="sendBtn">
-                                    Find
-                                </div>
+                        <div className="magniferBlock">
+                            <div className="inputField">
+                                <input placeholder="What are you looking for?"/>
                             </div>
+                            <div className="sendBtn">
+                                Find
+                            </div>
+                        </div>
                         }
                     </div>
                 </div>
