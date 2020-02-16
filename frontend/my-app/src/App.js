@@ -4,10 +4,10 @@ import filterIcon from './static/filterIcon.png'
 import routeIcon from './static/routeIcon.png'
 import magniferIcon from './static/magniferIcon.png'
 import {filterResults, getFloor} from "./api/floor";
-import {search} from "./api/search";
 import FloorLayout from "./components/FloorLayout/FloorLayout";
 import CabinetLayout from "./components/CabinetLayout/CabinetLayout";
 import ShowRoadBlock from "./components/ShowRoadBlock/ShowRoadBlock";
+import SearchBlock from "./components/SearchBlock/SearchBlock";
 
 export const LAYOUT_FLOOR = 'LAYOUT_FLOOR';
 export const LAYOUT_CABINET = 'LAYOUT_CABINET';
@@ -44,13 +44,6 @@ class App extends Component {
             },
             activeCabinet: {
                 tables: []
-            },
-            lastTimeSearch: 0,
-            searchFieldValue: "",
-            searchResult: {
-                users: null,
-                cabinet: null,
-                events: null,
             }
         };
 
@@ -64,8 +57,6 @@ class App extends Component {
         this.setupWarehouseFilter = this.setupWarehouseFilter.bind(this);
         this.prepareFilters = this.prepareFilters.bind(this);
         this.loadFloor = this.loadFloor.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.searchQuery = this.searchQuery.bind(this);
         this.drawPath = this.drawPath.bind(this);
     }
 
@@ -195,36 +186,10 @@ class App extends Component {
         this.prepareFilters()
     };
 
-    searchQuery() {
-        const value = this.state.searchFieldValue;
-        search(value).then(
-            r => {
-                this.setState({searchResult: r.result})
-            }
-        )
-    };
-
     drawPath(points) {
         const floor = this.state.activeFloor;
         this.setActiveFloor({...floor, points})
     }
-
-    handleChange({target}) {
-        if (target.value === "") {
-            return
-        }
-
-        const lastTime = this.state.lastTimeSearch;
-        const curTime = new Date().getTime();
-
-        this.setState({searchFieldValue: target.value});
-
-        if (curTime - lastTime >= 150) {
-            this.searchQuery();
-        }
-
-        this.setState({lastTimeSearch: curTime})
-    };
 
     toUpTapped = () => {
         const curId = this.state.activeFloor.id;
@@ -277,14 +242,6 @@ class App extends Component {
         }
     };
 
-    updateResultSearch() {
-        const result = this.state.searchResult;
-
-        result.users.map((item, i) => <li key={i}>item.name + " " + item.surname</li>);
-        result.cabinet.map((item, i) => <li key={i}>"cabinet " + item.id</li>);
-        // result.events.map((item, i) => <li key={i}>"event: " + item.name</li>);
-    }
-
     render() {
         const showFiltersBlock = this.state.filtersBlockShown;
         const showRoadBlock = this.state.roadBlockShown;
@@ -295,7 +252,6 @@ class App extends Component {
         const hasNoHistory = stateVersions.length === 0;
         const isFirstFloor = this.state.isFirstFloor;
         const isLastFloor = this.state.isLastFloor;
-        const searchResult = this.state.searchResult;
 
         return (
             <div className="App">
@@ -353,34 +309,7 @@ class App extends Component {
                             </div>
                         </div>
                         {showRoadBlock && <ShowRoadBlock drawPath={this.drawPath}/>}
-                        {showMagniferBlock &&
-                        <div className="magniferBlock">
-                            <div className="mgLabel">
-                                <span>Example: Cabinet 147, Ivanov Petr, Banquet</span>
-                            </div>
-                            <div className="inputField">
-                                <input placeholder="What are you looking for?" size="38" onChange={this.handleChange}/>
-                            </div>
-                            {searchResult && searchResult.users  && searchResult.cabinet && searchResult.events &&
-                                <div className="searchResult">
-                                    <ul>
-                                        {
-                                            searchResult.users.map((item, i) => <li key={i}>{item.name + " " + item.surname}</li>)
-                                        }
-                                        {
-                                            searchResult.cabinet.map((item, i) => <li key={i}>{"cabinet " + item.id}</li>)
-                                        }
-                                        {
-                                            searchResult.events.map((item, i) => <li key={i}>{"events: " + item.name}</li>)
-                                        }
-                                    </ul>
-                                </div>
-                            }
-                            <div className="sendBtn">
-                                Find
-                            </div>
-                        </div>
-                        }
+                        {showMagniferBlock && <SearchBlock/>}
                     </div>
                 </div>
                 <div className="officeMap">
