@@ -6,17 +6,17 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiRequest;
 use App\Models\Cabinet;
+use App\Models\Event;
 use App\Models\Search;
 
-class SearchController extends Controller {
+class EventController extends Controller {
 
     public function index(ApiRequest $request) {
-        $query = $request->get('query');
+        $event = Event::add([], '105', time() + 3600, time() + 7200, 'party');
 
-        $search_result = Search::search($query);
         return response()->json([
             'response' => 'ok',
-            'result' => $search_result,
+            'result' => Event::getAll(),
         ]);
     }
 
