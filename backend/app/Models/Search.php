@@ -113,6 +113,9 @@ class Search {
         $search_result = self::searchEngine($query);
 
         $result = [];
+        $result['users'] = [];
+        $result['cabinet'] = [];
+        $result['events'] = [];
         foreach ($search_result['users'] as $user_scored) {
             $result['users'][] = $user_scored['user'];
         }
