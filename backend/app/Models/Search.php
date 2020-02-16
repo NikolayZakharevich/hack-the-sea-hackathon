@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Redis;
 
 class Search {
 
-    public static function search($query) {
+    public static function searchEngine($query) {
         $result = [];
         $words  = explode(' ', $query);
         if (!$words) {
@@ -42,9 +42,7 @@ class Search {
             return ($a < $b) ? 1 : -1;
         });
 
-        foreach ($users_scored as $user_scored) {
-            $result['users'][] = $user_scored['user'];
-        }
+        $result['users'] = $users_scored;
 
         $cabinets = Cabinet::getAll();
         $cabinets_scores = [];
@@ -76,11 +74,65 @@ class Search {
             return ($a < $b) ? 1 : -1;
         });
 
-        foreach ($cabinets_scores as $cabinets_score) {
+        $result['cabinet'] = $cabinets_scores;
+
+        return $result;
+    }
+
+    public static function search($query) {
+        $search_result = self::searchEngine($query);
+
+        $result = [];
+        foreach ($search_result['users'] as $user_scored) {
+            $result['users'][] = $user_scored['user'];
+        }
+
+        foreach ($search_result['cabinet'] as $cabinets_score) {
             $result['cabinet'][] = $cabinets_score['cabinet'];
         }
 
         return $result;
+//        return self::mergeSearchResult($search_result);
+//        return self::mergeSearchResult($search_result);
+
+    }
+
+    public static function searchRoute($from, $to) {
+        $from_result = self::searchEngine($from);
+        $to_result = self::searchEngine($to);
+
+        $from_cabinets = self::mergeSearchResult($from_result);
+        $to_cabinets = self::mergeSearchResult($to_result);
+
+        foreach ($from_cabinets as $from_cabinet) {
+            foreach ($to_cabinets as $to_cabinet) {
+                if ($from_cabinet != $to_cabinet) {
+                    return [$from_cabinet, $to_cabinet];
+                }
+            }
+        }
+
+        return [false, false];
+    }
+
+    public static function mergeSearchResult($search_result) {
+        $result = [];
+        foreach ($search_result['users'] as $user_result) {
+            $cabinet_id = $user_result['user']['cabinet'];
+            $score = $user_result['score'];
+            $result[$cabinet_id] = (array_key_exists($cabinet_id, $result) ? $result[$cabinet_id] : 0) + $score;
+        }
+
+        foreach ($search_result['cabinet'] as $cabinet_result) {
+            $cabinet_id = $cabinet_result['cabinet']['id'];
+            $score = $cabinet_result['score'];
+            $result[$cabinet_id] = (array_key_exists($cabinet_id, $result) ? $result[$cabinet_id] : 0) + $score;
+        }
+
+        arsort($result);
+        echo implode(',', array_keys($result)) . "\n";
+        echo implode(',', $result) . "\n";
+        return array_keys($result);
     }
 
     private static function toLower($str) {

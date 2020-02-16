@@ -19,12 +19,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function show(ApiRequest $request, int $user_id)
-    {
+    public function show(ApiRequest $request, int $user_id) {
         $user = User::get($user_id);
         return response()->json([
             'response' => 'ok',
-            'user' => $user,
+            'user'     => $user,
         ]);
     }
 }
