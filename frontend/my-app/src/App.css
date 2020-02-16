@@ -7,7 +7,7 @@
 .topPanel {
     width: 77%;
     height: 3rem;
-    margin: 5rem auto auto;
+    margin: 3rem auto auto;
     display: flex;
     justify-content: space-between;
     align-items: end;
@@ -145,16 +145,6 @@
     height: 1.5rem;
 }
 
-.sendBtn {
-    width: 40%;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    margin: 0.5rem auto;
-    text-align: center;
-    background-color: #2196F3;
-    border-radius: 0.5rem;
-}
-
 .mgLabel {
     margin: 0.2rem 0.5rem 0 0.5rem;
 }
@@ -235,15 +225,6 @@
 
 .buttonDisabled {
     opacity: 30%;
-}
-
-.searchResult ul {
-    list-style-type: circle;
-}
-
-.searchResult ul li:hover {
-    cursor: pointer;
-    text-decoration: underline;
 }
 
 /*@keyframes App-logo-spin {*/
