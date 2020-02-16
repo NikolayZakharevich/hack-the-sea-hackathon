@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Redis;
 
 class Cabinet {
 
-    private static function getKey($user_id) {
-        return 'cabinet' . $user_id;
+    private static function getKey($cabinet_id) {
+        return 'cabinet' . $cabinet_id;
     }
 
     private static function getSetKey() {

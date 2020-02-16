@@ -43,7 +43,7 @@ class Floor {
                 unset($floor['cabinets'][$key]);
             }
         }
-
+        $floor['cabinets'] = array_values($floor['cabinets']);
         return $floor;
     }
 

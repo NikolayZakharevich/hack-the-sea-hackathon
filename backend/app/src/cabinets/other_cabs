@@ -1,18 +1,18 @@
 cofepoint_1;1;cofepoint
-girl_toilet_top;1;bathroom
-boy_toilet_top;1;bathroom
+girl_toilet_top_1;1;bathroom
+boy_toilet_top_1;1;bathroom
 116;1;sklad
 117;1;sklad
 118;1;sklad
 sklad;1;sklad
 girl_toilet_bottom;1;bathroom
 boy_toilet_bottom;1;bathroom
-311;3;Meeting room
-312;3;Meeting room
-313;3;Meeting room
-314;3;Meeting room
-boy_toilet_top;3;bathroom
-girl_toilet_top;3;bathroom
+311;3;meeting_room
+312;3;meeting_room
+313;3;meeting_room
+314;3;meeting_room
+boy_toilet_top_3;3;bathroom
+girl_toilet_top_3;3;bathroom
 cofepoint_3;3;cofepoint
 boy_toilet_bottom;3;bathroom
 girl_toilet_bottom;3;bathroom
