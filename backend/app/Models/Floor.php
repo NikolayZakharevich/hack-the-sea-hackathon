@@ -29,20 +29,29 @@ class Floor {
         return $result;
     }
 
-    public static function get($id) {
+    public static function get($id, $filters) {
         $floor_serialized = Redis::get(self::getKey($id));
         if (!$floor_serialized) {
             return null;
         }
 
-        return json_decode($floor_serialized, true);
+        $floor = json_decode($floor_serialized, true);
+        foreach ($floor['cabinets'] as $key => $cabinet) {
+            $cabinet_id = $cabinet['id'];
+            $cabinet = Cabinet::get($cabinet_id);
+            if (!in_array($cabinet['type'], $filters)) {
+                unset($floor['cabinets'][$key]);
+            }
+        }
+
+        return $floor;
     }
 
-    public static function getAll() {
+    public static function getAll($filters) {
         $all_floor_ids = (array)Redis::smembers(self::getSetKey());
         $floors        = [];
         foreach ($all_floor_ids as $floor_id) {
-            $floors[] = self::get($floor_id);
+            $floors[] = self::get($floor_id, $filters);
         }
 
         return $floors;
