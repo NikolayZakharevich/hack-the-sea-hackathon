@@ -6,9 +6,9 @@
 coffeepoint_1;Coffee Point;335;885
 girl_toilet_top_1;Women's toilet;520;320
 boy_toilet_top_1;Men's toilet;520;360
-116;Warehouse;500;410
-117;Warehouse;500;470
-118;Warehouse;500;535
+116;Rest room;500;410
+117;Fitness room;500;470
+118;Cinema;500;535
 sklad;Warehouse;500;618
 120;FOS;514;776
 girl_toilet_bottom_1;Women's toilet;500;1065
