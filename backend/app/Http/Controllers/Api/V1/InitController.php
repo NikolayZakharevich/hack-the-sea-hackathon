@@ -31,7 +31,7 @@ class InitController extends Controller
                 $floor = substr($cabinet_id, 0, 1);
                 User::create($name, $surname, $floor, $cabinet_id, $level, "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg");
                 self::$nameToId[$name." ".$surname] = self::$current_id++;
-                self::$cabinetToWorkers[$cabinet_id][$level][] =  $name." ".$surname;
+                self::$cabinetToWorkers[$cabinet_id][$level][] = $name." ".$surname;
             } elseif(sizeof($test) == 1) {
                 self::$cabinetToWorkers[$test[0]][$level] = [];
             }
@@ -75,9 +75,8 @@ class InitController extends Controller
         foreach ($tables as $table) {
             $test = explode(";", $table);
             if (sizeof($test) == 3) {
-                list($cabinet_id, $point_x, $point_y) = $test;
-                $floor = substr($cabinet_id, 0, 1);
-                self::$tableIdToPoints[$cabinet_id] = [
+                list($table_id, $point_x, $point_y) = $test;
+                self::$tableIdToPoints[$table_id] = [
                     "point_x" => $point_x,
                     "point_y" => $point_y,
                 ];
@@ -112,9 +111,9 @@ class InitController extends Controller
                 foreach($cabinet as $key => $user) {
                     $table_id = 1 + $key;
                     if ($level == 2) {
-                        $table_id += 11;
+                        $table_id = 13 + ($table_id % 12);
                     }
-                    if ($table_id >= 15) {
+                    if ($table_id == 15) {
                         $table_id += 1;
                     }
                     list($name, $surname) = explode(" ", $user);
@@ -128,6 +127,7 @@ class InitController extends Controller
                         "id" => $table_id,
                         "photo_url" => "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
                     ];
+                    echo "$level $table_id\n";
                 }
                 Cabinet::add($cabinet_id, $floor, $level, $level_count, "worker_room", $tables_data);
             }
