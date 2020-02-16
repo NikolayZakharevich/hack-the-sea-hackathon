@@ -572,7 +572,8 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                     cabinets.map(cabinet => {
                         return <g id="prefix__Layer_3">
                             <text
-                                transform={"translate(" + (cabinet.point_x - 10) + " " + (cabinet.point_y - 10) + ")"}
+                                transform={"translate(" + (cabinet.point_x - 10 - (cabinet.name.length <= 2 ? 0 : ((cabinet.name.length - 4) * 4) + 5))
+                                + " " + (cabinet.point_y - 10) + ")"}
                                 className={cabinet.id + " circleText"}
                                 onClick={() => onClickCabinet(cabinet.id)}
                                 key={cabinet.id + "name"}
@@ -606,7 +607,7 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                         const y = point.point_y;
 
                         return <line x1={xPrev} y1={yPrev}
-                                     x2={x} y2={y} stroke="black"
+                                     x2={x} y2={y} stroke="#159DF0"
                                      strokeWidth="10" strokeLinecap="round"
                         />;
                     })}
@@ -1073,11 +1074,13 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                     className="prefix__st3"
                     d="M470 563h97.5v4H470zM470 693.2h97.5v4H470z"
                 />
+
                 {!!cabinets &&
                 cabinets.map(cabinet => {
                     return <g id="prefix__Layer_3">
                         <text
-                            transform={"translate(" + (cabinet.point_x - 10) + " " + (cabinet.point_y - 10) + ")"}
+                            transform={"translate(" + (cabinet.point_x - 10 - (cabinet.name.length <= 2 ? 0 : ((cabinet.name.length - 4) * 4) + 5))
+                            + " " + (cabinet.point_y - 10) + ")"}
                             className={cabinet.id + " circleText"}
                             onClick={() => onClickCabinet(cabinet.id)}
                             key={cabinet.id + "name"}
@@ -1111,7 +1114,7 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                     const y = point.point_y;
 
                     return <line x1={xPrev} y1={yPrev}
-                                 x2={x} y2={y} stroke="black"
+                                 x2={x} y2={y} stroke="#159DF0"
                                  strokeWidth="10" strokeLinecap="round"
                     />;
                 })}
