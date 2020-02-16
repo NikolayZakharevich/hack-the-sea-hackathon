@@ -122,7 +122,7 @@ class App extends Component {
     setActiveFloor = ({id, cabinets}) => {
         const newState = this.state;
         newState.activeFloor = {id, cabinets};
-        this.setStateWithHistory(newState)
+        this.setState(newState)
     };
 
     setActiveCabinet = ({id, tables}) => {
