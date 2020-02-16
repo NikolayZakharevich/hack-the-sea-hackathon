@@ -31,7 +31,7 @@ class FloorLayout extends React.Component {
 
     render() {
 
-        const cabinets = this.state.cabinets || [];
+        const cabinets = this.state.cabinets;
 
         return <svg viewBox="0 0 842 1191">
             <style>

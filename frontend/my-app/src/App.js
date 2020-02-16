@@ -3,9 +3,12 @@ import './App.css';
 import filterIcon from './static/filterIcon.png'
 import routeIcon from './static/routeIcon.png'
 import magniferIcon from './static/magniferIcon.png'
-import FloorLayout from "./components/FloorLayout/FloorLayout";
 import {filterResults} from "./api/floor";
 import {search} from "./api/search";
+import {RouteNode} from "react-router5";
+import {PAGE_BUILDING, PAGE_CABINET, PAGE_FLOOR} from "./routes";
+import FloorLayout from "./components/FloorLayout/FloorLayout";
+import CabinetLayout from "./components/CabinetLayout/CabinetLayout";
 
 class App extends Component {
     constructor(props) {
@@ -62,11 +65,13 @@ class App extends Component {
         }
     }
 
-    filterResult = (id, filters) => {
-        getFloor(id, filters).then(
-            r => {}
-        )
+    filterResult = (filters) => {
+        const id = this.props.route.params.id;
+        filterResults(id, filters).then(r => {
+            console.log(r)
+        })
     };
+
 
     setupCoffeePointFilter = () => {
         const currentFilter = this.state.currentFilter;
@@ -75,11 +80,11 @@ class App extends Component {
     };
 
     setupBathroomFilter = () => {
-        const currentFilter = this.state.currentFilter;
-        currentFilter.bathroom = true;
-        this.setState({currentFilter})
+        const currentFilters = this.state.currentFilter;
+        currentFilters.bathroom = true;
+        this.setState({currentFilter: currentFilters});
 
-        // this.filterResults(id)
+        this.filterResult(currentFilters);
     };
 
     setupRestRoomFilter = () => {
@@ -96,9 +101,27 @@ class App extends Component {
         )
     };
 
-    componentDidMount() {
-        this.getCabinets(1)
-    }
+    renderLayout = () => {
+        const route = this.props.route;
+        if (!route) {
+            return <div/>
+        }
+        const topRouteName = route.name.split('.')[0]
+        const id = route.params.id;
+
+        if (topRouteName === PAGE_BUILDING) {
+            return <FloorLayout id={id}/>
+        }
+
+        if (topRouteName === PAGE_FLOOR) {
+            return <FloorLayout id={id}/>
+        }
+
+        if (topRouteName === PAGE_CABINET) {
+            return <CabinetLayout id={id}/>
+        }
+        return <div/>
+    };
 
     render() {
         const showFiltersBlock = this.state.filtersBlockShown;
@@ -187,11 +210,17 @@ class App extends Component {
                     </div>
                 </div>
                 <div className="officeMap">
-                    <Main/>
+                    {
+                        this.renderLayout()
+                    }
                 </div>
             </div>
         )
     };
 }
 
-export default App;
+export default (props) => (
+    <RouteNode nodeName="">
+        {({route}) => <App route={route} {...props} />}
+    </RouteNode>
+)
