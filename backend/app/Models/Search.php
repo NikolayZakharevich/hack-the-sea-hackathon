@@ -130,8 +130,6 @@ class Search {
         }
 
         arsort($result);
-        echo implode(',', array_keys($result)) . "\n";
-        echo implode(',', $result) . "\n";
         return array_keys($result);
     }
 
