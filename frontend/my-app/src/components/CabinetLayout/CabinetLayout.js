@@ -2,7 +2,7 @@ import React from "react"
 
 const CabinetLayout = ({tables, level}) => {
 
-    if (level === 1) {
+    if (level !== 2) {
         return (
             <svg viewBox="0 0 842 1191">
                 <style>
@@ -246,12 +246,10 @@ const CabinetLayout = ({tables, level}) => {
                 </style>
 
                 <g id="Layer_3">
+
                 </g>
                 <g id="Layer_1">
 
-                    {!!tables && tables.map(table => {
-                        return <circle className="prefix__st14" cx={table.point_x} cy={table.point_y} r={50}/>
-                    })}
                     <line className="prefix__st1 " x1="717.4" y1="312.3" x2="717.4" y2="312.9"/>
                     <line className="prefix__st1 " x1="144.8" y1="312.3" x2="144.8" y2="313.5"/>
                     <line className="prefix__st1" x1="709.3" y1="921" x2="708.2" y2="921.5"/>
@@ -306,6 +304,10 @@ const CabinetLayout = ({tables, level}) => {
                     <rect x="136.6" y="912.4" transform="matrix(-1 -1.224647e-16 1.224647e-16 -1 382.9702 1833.9773)"
                           className="prefix__st3 " width="109.7" height="9.1"/>
                     <polygon className="prefix__st6" fill="#fff" stroke="#939393" points="167,323.1 167,726.6 705.3,726.6 705.3,323.1 167,323.1 	"/>
+
+                    {!!tables && tables.map(table => {
+                        return <circle className="prefix__st14" cx={table.point_x} cy={table.point_y} r={50}/>
+                    })}
                     <rect x="254" y="647.7" className="prefix__st7 " width="36.6" height="63.8"/>
 
                     <rect x="374.3" y="636.6" transform="matrix(6.123234e-17 -1 1 6.123234e-17 -275.957 1061.1223)"
@@ -355,6 +357,7 @@ const CabinetLayout = ({tables, level}) => {
                     <text transform="matrix(1 0 0 1 257.2412 686.6544)" className="prefix__st8  prefix__st9  prefix__st10 ">24</text>
                 </g>
                 <g id="Layer_2">
+
                     {!!tables && tables.map(table => {
                         // const imageX = (table.id <= 12 && (table.id - 1)) % 6 <= 2 ? table.point_x - 65 : table.point_x - (-15);
                         const imageX = ((table.id == 13 || table.id == 16 || table.id == 18  || table.id == 24)  ? table.point_x - 65 :
