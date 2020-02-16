@@ -1,6 +1,8 @@
 import React from "react"
 import "./SearchBlock.scss"
 import {search} from "../../api/search";
+import {getCabinet} from "../../api/cabinet";
+import {LAYOUT_CABINET} from "../../App";
 
 class SearchBlock extends React.Component {
 
@@ -15,10 +17,21 @@ class SearchBlock extends React.Component {
                 cabinet: null,
                 events: null,
             }
-        }
+        };
 
-        this.handleChange = this.handleChange.bind(this)
+        this.handleChange = this.handleChange.bind(this);
+        this.onClickCabinet = this.onClickCabinet.bind(this);
     }
+
+    onClickCabinet = id => {
+        getCabinet(id).then(r => {
+                if (r && r.cabinet) {
+                    this.props.setActiveCabinet({id, tables: r.cabinet.tables});
+                    this.props.setActiveLayout(LAYOUT_CABINET)
+                }
+            }
+        )
+    };
 
     searchQuery() {
         const value = this.state.searchFieldValue;
@@ -63,19 +76,19 @@ class SearchBlock extends React.Component {
                 <span>Example: Cabinet 147, Ivanov Petr, Banquet</span>
             </div>
             <div className="inputField">
-                <input placeholder="What are you looking for?" size="38" onChange={this.handleChange}/>
+                <input placeholder="What are you looking for?"  onChange={this.handleChange}/>
             </div>
             {searchResult && searchResult.users  && searchResult.cabinet && searchResult.events &&
             <div className="searchResult">
                 <ul>
                     {
-                        searchResult.users.map((item, i) => <li key={i}>{item.name + " " + item.surname}</li>)
+                        searchResult.users.map((item, i) => <li key={i} onClick={() => this.onClickCabinet(item.cabinet)}>{item.name + " " + item.surname}</li>)
                     }
                     {
-                        searchResult.cabinet.map((item, i) => <li key={i}>{"cabinet " + item.id}</li>)
+                        searchResult.cabinet.map((item, i) => <li key={i} onClick={() => this.onClickCabinet(item.id)}>{"cabinet " + item.id}</li>)
                     }
                     {
-                        searchResult.events.map((item, i) => <li key={i}>{"events: " + item.name}</li>)
+                        searchResult.events.map((item, i) => <li key={i} onClick={() => this.onClickCabinet(item.cabinet_id)}>{"events: " + item.name}</li>)
                     }
                 </ul>
             </div>
