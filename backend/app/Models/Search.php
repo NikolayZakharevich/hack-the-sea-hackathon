@@ -125,7 +125,7 @@ class Search {
         }
 
         foreach ($search_result['events'] as $event_score) {
-            $result['event'][] = $event_score['event'];
+            $result['events'][] = $event_score['event'];
         }
 
         return $result;
