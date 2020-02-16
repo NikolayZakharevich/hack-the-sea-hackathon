@@ -222,8 +222,13 @@
     opacity: 30%;
 }
 
-.searchResult {
+.searchResult ul {
+    list-style-type: circle;
+}
 
+.searchResult ul li:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /*@keyframes App-logo-spin {*/

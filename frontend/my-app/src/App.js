@@ -223,7 +223,7 @@ class App extends Component {
 
         this.setState({searchFieldValue: target.value});
 
-        if (curTime - lastTime >= 300) {
+        if (curTime - lastTime >= 150) {
             this.searchQuery();
         }
 
