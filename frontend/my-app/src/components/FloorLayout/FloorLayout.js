@@ -33,7 +33,9 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                 />
                 <g id="prefix__Layer_1">
                     {!!cabinets && cabinets.map(cabinet => {
-                        return <circle className="prefix__st14" cx={cabinet.point_x - (-10)} cy={cabinet.point_y - 10} r={circleRadius}/>
+                        return <circle className="prefix__st14 circle"
+                                       onClick={() => onClickCabinet(cabinet.id)}
+                                       cx={cabinet.point_x - (-10)} cy={cabinet.point_y - 10} r={circleRadius}/>
                     })}
                     <path
                         className="prefix__st1"
@@ -571,7 +573,7 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                         return <g id="prefix__Layer_3">
                             <text
                                 transform={"translate(" + (cabinet.point_x - 10) + " " + (cabinet.point_y - 10) + ")"}
-                                className={cabinet.id}
+                                className={cabinet.id + " circleText"}
                                 onClick={() => onClickCabinet(cabinet.id)}
                                 key={cabinet.id + "name"}
                                 cursor={"pointer"}
@@ -581,7 +583,7 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                             {isNumeric(cabinet.id) &&
                             <text
                                 transform={"translate(" + (cabinet.point_x - 10) + " " + (+cabinet.point_y + 10) + ")"}
-                                className={cabinet.id}
+                                className={cabinet.id + " circleText"}
                                 onClick={() => onClickCabinet(cabinet.id)}
                                 key={cabinet.id + "id"}
                                 cursor={"pointer"}
@@ -809,7 +811,9 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
             </g>
             <g id="prefix__Layer_2">
                 {!!cabinets && cabinets.map(cabinet => {
-                    return <circle className="prefix__st14" cx={cabinet.point_x - (-10)} cy={cabinet.point_y - 10} r={circleRadius}/>
+                    return <circle className="prefix__st14 circle"
+                                   onClick={() => onClickCabinet(cabinet.id)}
+                                   cx={cabinet.point_x - (-10)} cy={cabinet.point_y - 10} r={circleRadius}/>
                 })}
                 <path
                     transform="rotate(-90 470.736 308.17)"
@@ -1074,7 +1078,7 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                     return <g id="prefix__Layer_3">
                         <text
                             transform={"translate(" + (cabinet.point_x - 10) + " " + (cabinet.point_y - 10) + ")"}
-                            className={cabinet.id}
+                            className={cabinet.id + " circleText"}
                             onClick={() => onClickCabinet(cabinet.id)}
                             key={cabinet.id + "name"}
                             cursor={"pointer"}
@@ -1084,7 +1088,7 @@ const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, set
                         {isNumeric(cabinet.id) &&
                         <text
                             transform={"translate(" + (cabinet.point_x - 10) + " " + (+cabinet.point_y + 10) + ")"}
-                            className={cabinet.id}
+                            className={cabinet.id + " circleText"}
                             onClick={() => onClickCabinet(cabinet.id)}
                             key={cabinet.id + "id"}
                             cursor={"pointer"}
