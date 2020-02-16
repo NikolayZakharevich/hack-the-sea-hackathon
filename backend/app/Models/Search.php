@@ -143,7 +143,7 @@ class Search {
             }
         }
 
-        return [false, false];dd
+        return [false, false];
     }
 
     public static function mergeSearchResult($search_result) {
