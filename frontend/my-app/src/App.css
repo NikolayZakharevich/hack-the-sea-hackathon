@@ -222,6 +222,10 @@
     line-height: 2rem;
 }
 
+.buttonDisabled {
+    opacity: 30%;
+}
+
 /*@keyframes App-logo-spin {*/
 /*  from {*/
 /*    transform: rotate(0deg);*/
