@@ -33,6 +33,7 @@ class App extends Component {
         this.setupCoffeePointFilter = this.setupCoffeePointFilter.bind(this);
         this.setupBathroomFilter = this.setupBathroomFilter.bind(this);
         this.setupRestRoomFilter = this.setupRestRoomFilter.bind(this);
+        this.prepareFilters = this.prepareFilters.bind(this);
     }
 
     onClickLeftBlock() {
@@ -68,15 +69,22 @@ class App extends Component {
     filterResult = (filters) => {
         const id = this.props.route.params.id;
         filterResults(id, filters).then(r => {
-            console.log(r)
+            this.renderLayout()
         })
     };
 
+    prepareFilters() {
+        const filters = this.state.currentFilter;
+
+        this.filterResult(Object.keys(filters).filter(e => filters[e]).join("\,"));
+    }
 
     setupCoffeePointFilter = () => {
         const currentFilter = this.state.currentFilter;
         currentFilter.coffeePoint = true;
         this.setState({currentFilter})
+
+        this.prepareFilters()
     };
 
     setupBathroomFilter = () => {
@@ -84,13 +92,15 @@ class App extends Component {
         currentFilters.bathroom = true;
         this.setState({currentFilter: currentFilters});
 
-        this.filterResult(currentFilters);
+        this.prepareFilters()
     };
 
     setupRestRoomFilter = () => {
         const currentFilter = this.state.currentFilter;
         currentFilter.restRoom = true;
         this.setState({currentFilter})
+
+        this.prepareFilters()
     };
 
     searchQuery = str => {
