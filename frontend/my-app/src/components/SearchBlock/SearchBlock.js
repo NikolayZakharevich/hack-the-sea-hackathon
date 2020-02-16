@@ -59,16 +59,7 @@ class SearchBlock extends React.Component {
         this.setState({lastTimeSearch: curTime})
     };
 
-    updateResultSearch() {
-        const result = this.state.searchResult;
-
-        result.users.map((item, i) => <li key={i}>item.name + " " + item.surname</li>);
-        result.cabinet.map((item, i) => <li key={i}>"cabinet " + item.id</li>);
-        // result.events.map((item, i) => <li key={i}>"event: " + item.name</li>);
-    }
-
     render() {
-
         const searchResult = this.state.searchResult;
 
         return <div className="magniferBlock">
@@ -76,26 +67,31 @@ class SearchBlock extends React.Component {
                 <span>Example: Cabinet 147, Ivanov Petr, Banquet</span>
             </div>
             <div className="inputField">
-                <input placeholder="What are you looking for?"  onChange={this.handleChange}/>
+                <input placeholder="What are you looking for?" size={"38"} onChange={this.handleChange}/>
             </div>
             {searchResult && searchResult.users  && searchResult.cabinet && searchResult.events &&
             <div className="searchResult">
-                <ul>
-                    {
-                        searchResult.users.map((item, i) => <li key={i} onClick={() => this.onClickCabinet(item.cabinet)}>{item.name + " " + item.surname}</li>)
-                    }
-                    {
-                        searchResult.cabinet.map((item, i) => <li key={i} onClick={() => this.onClickCabinet(item.id)}>{"cabinet " + item.id}</li>)
-                    }
-                    {
-                        searchResult.events.map((item, i) => <li key={i} onClick={() => this.onClickCabinet(item.cabinet_id)}>{"events: " + item.name}</li>)
-                    }
-                </ul>
+                {(searchResult.users.length > 0 || searchResult.cabinet.length > 0 || searchResult.events.length > 0) ?
+                    <ul>
+                        {
+                            searchResult.users.map((item, i) => <li key={i}
+                                                                    onClick={() => this.onClickCabinet(item.cabinet)}>{item.name + " " + item.surname}</li>)
+                        }
+                        {
+                            searchResult.cabinet.map((item, i) => <li key={i}
+                                                                      onClick={() => this.onClickCabinet(item.id)}>{"cabinet " + item.id}</li>)
+                        }
+                        {
+                            searchResult.events.map((item, i) => <li key={i}
+                                                                     onClick={() => this.onClickCabinet(item.cabinet_id)}>{"events: " + item.name}</li>)
+                        }
+                    </ul> :
+                    <ul>
+                        <li>No matches for your request</li>
+                    </ul>
+                }
             </div>
             }
-            <div className="SearchBlock__sendBtn">
-                Find
-            </div>
         </div>
     };
 }
