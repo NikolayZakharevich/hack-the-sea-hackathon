@@ -1,8 +1,24 @@
 import React from "react"
+import {getCabinet} from "../../api/cabinet";
 
-const CabinetLayout = ({tables, level, type}) => {
-    return (
-        <svg viewBox="0 0 842 1191">
+class CabinetLayout extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            tables: [],
+            type: null
+        };
+    }
+
+    componentDidMount() {
+        getCabinet(this.props.id).then(r => {
+            console.log(r)
+        })
+    }
+
+    render() {
+        return <svg viewBox="0 0 842 1191">
             <style>
                 {
                     ".prefix__st1{fill:none;stroke:#000;stroke-width:.12;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}.prefix__st3{fill:#939393}.prefix__st7{fill:#7a8487}.prefix__st9{fill:#fff}.prefix__st10{font-family:&apos;Roboto-Black&apos;}.prefix__st11{font-size:25px}.prefix__st12{fill:none;stroke:#7a8487;stroke-miterlimit:10}"
@@ -50,15 +66,15 @@ const CabinetLayout = ({tables, level, type}) => {
                     className="prefix__st7"
                     d="M194.2 615.1h36.6v63.8h-36.6zM192.9 481.4h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={178.6} cy={513.3} r={8.8} />
-                <path className="prefix__st7" d="M193.2 353h36.6v63.8h-36.6z" />
-                <circle className="prefix__st7" cx={178.9} cy={384.9} r={8.8} />
+                <circle className="prefix__st7" cx={178.6} cy={513.3} r={8.8}/>
+                <path className="prefix__st7" d="M193.2 353h36.6v63.8h-36.6z"/>
+                <circle className="prefix__st7" cx={178.9} cy={384.9} r={8.8}/>
                 <path
                     transform="rotate(-180 339.86 384.918)"
                     className="prefix__st7"
                     d="M321.6 353h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={372.5} cy={384.9} r={8.8} />
+                <circle className="prefix__st7" cx={372.5} cy={384.9} r={8.8}/>
                 <text
                     transform="translate(203.425 520.686)"
                     className="prefix__st9 prefix__st10 prefix__st11"
@@ -94,7 +110,7 @@ const CabinetLayout = ({tables, level, type}) => {
                     className="prefix__st7"
                     d="M320.8 478.6h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={371.7} cy={510.5} r={8.8} />
+                <circle className="prefix__st7" cx={371.7} cy={510.5} r={8.8}/>
                 <text
                     transform="translate(332.41 519.363)"
                     className="prefix__st9 prefix__st10 prefix__st11"
@@ -106,27 +122,27 @@ const CabinetLayout = ({tables, level, type}) => {
                     className="prefix__st7"
                     d="M321.6 612.7h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={372.5} cy={644.6} r={8.8} />
+                <circle className="prefix__st7" cx={372.5} cy={644.6} r={8.8}/>
                 <text
                     transform="translate(333.187 653.369)"
                     className="prefix__st9 prefix__st10 prefix__st11"
                 >
                     {"6"}
                 </text>
-                <circle className="prefix__st7" cx={178.6} cy={650} r={8.8} />
+                <circle className="prefix__st7" cx={178.6} cy={650} r={8.8}/>
                 <path
                     className="prefix__st7"
                     d="M502.5 612.5h36.6v63.8h-36.6zM501.2 478.7h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={486.9} cy={510.6} r={8.8} />
-                <path className="prefix__st7" d="M501.5 349.4h36.6v63.8h-36.6z" />
-                <circle className="prefix__st7" cx={487.2} cy={381.3} r={8.8} />
+                <circle className="prefix__st7" cx={486.9} cy={510.6} r={8.8}/>
+                <path className="prefix__st7" d="M501.5 349.4h36.6v63.8h-36.6z"/>
+                <circle className="prefix__st7" cx={487.2} cy={381.3} r={8.8}/>
                 <path
                     transform="rotate(-180 648.17 381.261)"
                     className="prefix__st7"
                     d="M629.9 349.4h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={680.8} cy={381.3} r={8.8} />
+                <circle className="prefix__st7" cx={680.8} cy={381.3} r={8.8}/>
                 <text
                     transform="translate(513.094 518.03)"
                     className="prefix__st9 prefix__st10 prefix__st11"
@@ -162,7 +178,7 @@ const CabinetLayout = ({tables, level, type}) => {
                     className="prefix__st7"
                     d="M629.1 476h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={680.1} cy={507.9} r={8.8} />
+                <circle className="prefix__st7" cx={680.1} cy={507.9} r={8.8}/>
                 <text
                     transform="translate(632.719 516.706)"
                     className="prefix__st9 prefix__st10 prefix__st11"
@@ -174,14 +190,14 @@ const CabinetLayout = ({tables, level, type}) => {
                     className="prefix__st7"
                     d="M629.9 610h36.6v63.8h-36.6z"
                 />
-                <circle className="prefix__st7" cx={680.8} cy={641.9} r={8.8} />
+                <circle className="prefix__st7" cx={680.8} cy={641.9} r={8.8}/>
                 <text
                     transform="translate(633.496 650.712)"
                     className="prefix__st9 prefix__st10 prefix__st11"
                 >
                     {"12"}
                 </text>
-                <circle className="prefix__st7" cx={486.9} cy={647.4} r={8.8} />
+                <circle className="prefix__st7" cx={486.9} cy={647.4} r={8.8}/>
                 <path
                     className="prefix__st12"
                     d="M421 330.1h30V409h-30zM421 481.2h30v78.9h-30z"
@@ -195,14 +211,15 @@ const CabinetLayout = ({tables, level, type}) => {
                     className="prefix__st12"
                     d="M420.7 678.2h30v78.9h-30z"
                 />
-                <path className="prefix__st12" d="M421 830.9h30v78.9h-30z" />
+                <path className="prefix__st12" d="M421 830.9h30v78.9h-30z"/>
                 <path
                     className="prefix__st3"
                     d="M633.1 903.6h74V723.8h-53.3V852h-20.7V903.6zm2.3-49.2h7.6v46.8h-7.6v-46.8zm18.4 0v46.8h-8.3v-46.8h8.3zm50.9-98.7v11.7h-48.5v-11.7h48.5zm-48.5-2.4v-11.7h48.5v11.7h-48.5zm48.5 16.5v11.6h-48.5v-11.6h48.5zm0 14v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5V812h48.5zm0 14.1v11.8h-48.5v-11.8h48.5zm-48.5-100h48.5v13.2h-48.5v-13.2zM704.7 852h-48.5v-11.7h48.5V852zm0 49.2h-48.5v-46.8h48.5v46.8z"
                 />
             </g>
         </svg>
-    )
+    }
+
 }
 
 export default CabinetLayout

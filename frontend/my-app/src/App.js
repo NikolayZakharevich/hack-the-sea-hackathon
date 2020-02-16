@@ -4,22 +4,32 @@ import filterIcon from './static/filterIcon.png'
 import routeIcon from './static/routeIcon.png'
 import magniferIcon from './static/magniferIcon.png'
 import FloorLayout from "./components/FloorLayout/FloorLayout";
-import {getCabinet, getFloor} from "./api/floor";
+import {filterResults} from "./api/floor";
+import {search} from "./api/search";
 
 class App extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             filtersBlockShown: false,
             roadBlockShown: false,
             magniferBlockShow: false,
             cabinets: null,
+            activeCabinets: null,
+            currentFilter: {
+                coffeePoint: false,
+                bathroom: false,
+                restRoom: false
+            }
         };
 
         this.onClickLeftBlock = this.onClickLeftBlock.bind(this);
         this.onClickRoadIcon = this.onClickRoadIcon.bind(this);
         this.onClickMagniferIcon = this.onClickMagniferIcon.bind(this);
-        this.getCabinets = this.getCabinets.bind(this)
+        this.setupCoffeePointFilter = this.setupCoffeePointFilter.bind(this);
+        this.setupBathroomFilter = this.setupBathroomFilter.bind(this);
+        this.setupRestRoomFilter = this.setupRestRoomFilter.bind(this);
     }
 
     onClickLeftBlock() {
@@ -52,10 +62,36 @@ class App extends Component {
         }
     }
 
-    getCabinets = id => {
-        getFloor(id).then(
+    filterResult = (id, filters) => {
+        getFloor(id, filters).then(
+            r => {}
+        )
+    };
+
+    setupCoffeePointFilter = () => {
+        const currentFilter = this.state.currentFilter;
+        currentFilter.coffeePoint = true;
+        this.setState({currentFilter})
+    };
+
+    setupBathroomFilter = () => {
+        const currentFilter = this.state.currentFilter;
+        currentFilter.bathroom = true;
+        this.setState({currentFilter})
+
+        // this.filterResults(id)
+    };
+
+    setupRestRoomFilter = () => {
+        const currentFilter = this.state.currentFilter;
+        currentFilter.restRoom = true;
+        this.setState({currentFilter})
+    };
+
+    searchQuery = str => {
+        search(str).then(
             r => {
-                this.setState({cabinets: r.floor.cabinets})
+                this.setState({activeCabinets: r.result})
             }
         )
     };
@@ -68,7 +104,8 @@ class App extends Component {
         const showFiltersBlock = this.state.filtersBlockShown;
         const showRoadBlock = this.state.roadBlockShown;
         const showMagniferBlock = this.state.magniferBlockShow;
-        const cabinets = this.state.cabinets;
+
+        let searchQuery = "";
 
         return (
             <div className="App">
@@ -82,15 +119,15 @@ class App extends Component {
                         {showFiltersBlock &&
                         <div className="filtersBlock">
                             <label className="container">Coffee Point
-                                <input type="checkbox"/>
+                                <input type="checkbox" onClick={this.setupCoffeePointFilter}/>
                                 <span className="checkmark"></span>
                             </label>
                             <label className="container">Bathroom
-                                <input type="checkbox"/>
+                                <input type="checkbox" onClick={this.setupBathroomFilter}/>
                                 <span className="checkmark"></span>
                             </label>
                             <label className="container">Rest Room
-                                <input type="checkbox"/>
+                                <input type="checkbox" onClick={this.setupRestRoomFilter}/>
                                 <span className="checkmark"></span>
                             </label>
                         </div>
@@ -140,9 +177,9 @@ class App extends Component {
                                 <span>Example: Cabinet 147, Ivanov Petr, Banquet</span>
                             </div>
                             <div className="inputField">
-                                <input placeholder="What are you looking for?" size="38"/>
+                                <input placeholder="What are you looking for?" size="38" value={searchQuery}/>
                             </div>
-                            <div className="sendBtn">
+                            <div className="sendBtn" onClick={search(searchQuery)}>
                                 Find
                             </div>
                         </div>
@@ -150,9 +187,7 @@ class App extends Component {
                     </div>
                 </div>
                 <div className="officeMap">
-                    {cabinets &&
-                        <FloorLayout cabinets={cabinets}/>
-                    }
+                    <Main/>
                 </div>
             </div>
         )

@@ -1,5 +1,9 @@
+export const PAGE_CABINET = 'cabinet'
+export const PAGE_FLOOR = 'floor'
+export const PAGE_BUILDING = 'building'
+
 export default [
-    { name: 'building', path: '/floor' },
-    { name: 'building.floor', path: '/floor/:id' },
-    { name: 'cabinet', path: '/cabinet/:id' },
+    { name: PAGE_BUILDING, path: '/index' },
+    { name: PAGE_FLOOR, path: '/floor/:id' },
+    { name: PAGE_CABINET, path: '/cabinet/:id' },
 ]
