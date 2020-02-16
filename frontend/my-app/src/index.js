@@ -3,6 +3,7 @@ import React from 'react'
 import App from './App'
 import { RouterProvider } from 'react-router5'
 import createRouter from './create-router'
+import "typeface-comfortaa";
 
 const router = createRouter()
 
