@@ -34,6 +34,11 @@ class FloorController extends Controller {
     }
 
     private function getFilters(ApiRequest $request) {
-        return explode(',', (string)$request->get('filters'));
+        $filters = (string)$request->get('filters');
+        if ($filters) {
+            return explode(',', $filters);
+        } else {
+            return [];
+        }
     }
 }

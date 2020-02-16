@@ -36,14 +36,16 @@ class Floor {
         }
 
         $floor = json_decode($floor_serialized, true);
-        foreach ($floor['cabinets'] as $key => $cabinet) {
-            $cabinet_id = $cabinet['id'];
-            $cabinet = Cabinet::get($cabinet_id);
-            if (!in_array($cabinet['type'], $filters)) {
-                unset($floor['cabinets'][$key]);
+        if ($filters) {
+            foreach ($floor['cabinets'] as $key => $cabinet) {
+                $cabinet_id = $cabinet['id'];
+                $cabinet    = Cabinet::get($cabinet_id);
+                if (!in_array($cabinet['type'], $filters)) {
+                    unset($floor['cabinets'][$key]);
+                }
             }
         }
-
+        $floor['cabinets'] = array_values($floor['cabinets']);
         return $floor;
     }
 
