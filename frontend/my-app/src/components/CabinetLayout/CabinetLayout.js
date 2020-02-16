@@ -2,10 +2,6 @@ import React from "react"
 
 const CabinetLayout = ({tables}) => {
 
-    const mapTables = (functor, tables) => {
-        tables.map(functor)
-    }
-
     return (
         <svg viewBox="0 0 842 1191">
             <style>
@@ -14,6 +10,11 @@ const CabinetLayout = ({tables}) => {
                 }
             </style>
             <g id="prefix__Layer_2">
+                {!!tables && tables.map(table => {
+                    return <clipPath id={"circleTable" + table.id}>
+                        <circle className="prefix__st14" cx={table.point_x} cy={table.point_y} r={44}/>
+                    </clipPath>
+                })}
                 <path
                     className="prefix__st1"
                     d="M717.6 309.8v.5M145 309.8v1.1M709.5 918.4l-1.1.6M709.5 915l-4 4M709.5 912.7l-7.4 6.3M705.5 912.7l-6.8 6.3M702.1 912.7l-7.4 6.3M698.7 912.7l-6.9 6.3M695.8 912.7l-7.4 6.3M692.4 912.7L685 919M688.4 912.7l-6.9 6.3M685 912.7l-7.5 6.3M681.5 912.7l-6.3 6.3M678.7 912.7l-6.9 6.3M675.2 912.7l-7.4 6.3M671.8 912.7l-6.9 6.3M668.9 912.7l-7.4 6.3M665.5 912.7l-7.4 6.3M661.5 912.7l-6.9 6.3M658.1 912.7l-7.5 6.3M654.6 912.7l-6.8 6.3M651.8 912.7l-7.5 6.3M648.3 912.7l-7.4 6.3M644.3 912.7L638 919M642 912.7l-8.5 6.3M638 912.7l-6.8 6.3M634.6 912.7l-6.9 6.3"
@@ -206,19 +207,22 @@ const CabinetLayout = ({tables}) => {
                     d="M633.1 903.6h74V723.8h-53.3V852h-20.7V903.6zm2.3-49.2h7.6v46.8h-7.6v-46.8zm18.4 0v46.8h-8.3v-46.8h8.3zm50.9-98.7v11.7h-48.5v-11.7h48.5zm-48.5-2.4v-11.7h48.5v11.7h-48.5zm48.5 16.5v11.6h-48.5v-11.6h48.5zm0 14v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5V812h48.5zm0 14.1v11.8h-48.5v-11.8h48.5zm-48.5-100h48.5v13.2h-48.5v-13.2zM704.7 852h-48.5v-11.7h48.5V852zm0 49.2h-48.5v-46.8h48.5v46.8z"
                 />
                 {!!tables && tables.map(table => {
-                    return <circle className="prefix__st14" cx={table.point_x} cy={table.point_y} r={44}/>
-                })}
-                {!!tables && tables.map(table => {
                     return <g id="prefix__Layer_3">
                         <text
-                            transform={"translate(" + (table.point_x - 30) + " " + table.point_y + ")"}
+                            transform={"translate(" + (table.point_x - 30) + " " + (table.point_y) + ")"}
                             className="prefix__st13"
                             key={table.id}
                         >
                             {table.name}
                         </text>
+                        <image
+                            xlinkHref={table.photo_url}
+                            width={"100"}
+                            height={"100"}
+                            clipPath={"url(#" + "circleTable" + table.id + ")"}
+                        />
                         <text
-                            transform={"translate(" + (table.point_x - 30) + " " + (table.point_y - 15) + ")"}
+                            transform={"translate(" + (table.point_x - 30) + " " + (table.point_y + 5) + ")"}
                             className="prefix__st13"
                             key={table.id + "_"}
                         >
@@ -227,6 +231,7 @@ const CabinetLayout = ({tables}) => {
                     </g>
                 })}
             </g>
+            }
         </svg>
     )
 };

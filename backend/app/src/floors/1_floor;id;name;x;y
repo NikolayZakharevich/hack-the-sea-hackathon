@@ -3,7 +3,7 @@
 106;Web;335;565
 105;Solutions;335;706
 104;Demorum;335;810
-cofepoint_1;Coffepoint;335;885
+coffeepoint_1;Coffee Point;335;885
 girl_toilet_top_1;Women's toilet;520;320
 boy_toilet_top_1;Men's toilet;520;360
 116;Warehouse;500;410
@@ -11,5 +11,5 @@ boy_toilet_top_1;Men's toilet;520;360
 118;Warehouse;500;535
 sklad;Warehouse;500;618
 120;FOS;514;776
-girl_toilet_bottom_1;Женский туалет;500;1065
-boy_toilet_bottom_1;Мужской туалет;500;1095
+girl_toilet_bottom_1;Women's toilet;500;1065
+boy_toilet_bottom_1;Men's toilet;500;1095

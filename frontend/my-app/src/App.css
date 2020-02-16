@@ -139,7 +139,7 @@
 }
 
 .roadBlock .magniferBlock {
-    /*overflow: hidden;*/
+    z-index: 1000;
 }
 
 .rbTitle {

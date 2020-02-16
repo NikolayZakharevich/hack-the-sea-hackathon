@@ -25,7 +25,9 @@ class App extends Component {
             currentFilter: {
                 coffeePoint: false,
                 bathroom: false,
-                restRoom: false
+                workerRoom: false,
+                meetingRoom: false,
+                warehouse: false
             },
 
             activeLayout: LAYOUT_FLOOR,
@@ -42,7 +44,9 @@ class App extends Component {
         this.onClickMagniferIcon = this.onClickMagniferIcon.bind(this);
         this.setupCoffeePointFilter = this.setupCoffeePointFilter.bind(this);
         this.setupBathroomFilter = this.setupBathroomFilter.bind(this);
-        this.setupRestRoomFilter = this.setupRestRoomFilter.bind(this);
+        this.setupWorkerRoomFilter = this.setupWorkerRoomFilter.bind(this);
+        this.setupMeetingRoomFilter = this.setupMeetingRoomFilter.bind(this);
+        this.setupWarehouseFilter = this.setupWarehouseFilter.bind(this);
         this.prepareFilters = this.prepareFilters.bind(this);
     }
 
@@ -99,20 +103,22 @@ class App extends Component {
 
     setActiveFloor = ({id, cabinets}) => {
         const newState = this.state;
-        newState.activeFloor = {cabinets}
+        console.log(cabinets)
+        newState.activeFloor = {id, cabinets}
         this.setState(newState)
     };
 
-    setActiveCabinet = ({tables}) => {
+    setActiveCabinet = ({id, tables}) => {
         const newState = this.state;
-        newState.activeCabinet = {tables}
+        newState.activeCabinet = {id, tables}
         this.setState(newState)
     };
 
     filterResult = (filters) => {
         const id = this.state.activeFloor.id;
+        console.log(id);
         filterResults(id, filters).then(r => {
-            this.setActiveFloor({id, cabinets: r.cabinets})
+            this.setActiveFloor({id, cabinets: r.floor.cabinets})
         })
     };
 
@@ -124,7 +130,7 @@ class App extends Component {
     setupCoffeePointFilter = () => {
         const currentFilter = this.state.currentFilter;
         currentFilter.coffeePoint = !currentFilter.coffeePoint;
-        this.setState({currentFilter})
+        this.setState({currentFilter});
         this.prepareFilters()
     };
 
@@ -135,10 +141,24 @@ class App extends Component {
         this.prepareFilters()
     };
 
-    setupRestRoomFilter = () => {
+    setupWorkerRoomFilter = () => {
         const currentFilter = this.state.currentFilter;
-        currentFilter.restRoom = !currentFilter.restRoom;
-        this.setState({currentFilter})
+        currentFilter.workerRoom = !currentFilter.workerRoom;
+        this.setState({currentFilter});
+        this.prepareFilters()
+    };
+
+    setupMeetingRoomFilter = () => {
+        const currentFilter = this.state.currentFilter;
+        currentFilter.workerRoom = !currentFilter.workerRoom;
+        this.setState({currentFilter});
+        this.prepareFilters()
+    };
+
+    setupWarehouseFilter = () => {
+        const currentFilter = this.state.currentFilter;
+        currentFilter.warehouse = !currentFilter.warehouse;
+        this.setState({currentFilter});
         this.prepareFilters()
     };
 
@@ -197,8 +217,16 @@ class App extends Component {
                                 <input type="checkbox" onClick={this.setupBathroomFilter}/>
                                 <span className="checkmark"/>
                             </label>
-                            <label className="container">Rest Room
-                                <input type="checkbox" onClick={this.setupRestRoomFilter}/>
+                            <label className="container">Worker Room
+                                <input type="checkbox" onClick={this.setupWorkerRoomFilter}/>
+                                <span className="checkmark"/>
+                            </label>
+                            <label className="container">Meeting Room
+                                <input type="checkbox" onClick={this.setupMeetingRoomFilter}/>
+                                <span className="checkmark"/>
+                            </label>
+                            <label className="container">Warehouse
+                                <input type="checkbox" onClick={this.setupWarehouseFilter}/>
                                 <span className="checkmark"/>
                             </label>
                         </div>
