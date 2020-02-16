@@ -18,7 +18,7 @@ class CabinetController extends Controller {
         ]);
     }
 
-    public function show(ApiRequest $request, int $id) {
+    public function show(ApiRequest $request, string $id) {
         $cabinet = Cabinet::get($id);
         return response()->json([
             'response' => 'ok',
