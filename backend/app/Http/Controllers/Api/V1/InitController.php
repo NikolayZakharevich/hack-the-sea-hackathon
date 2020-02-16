@@ -27,10 +27,11 @@ class InitController extends Controller
         "https://pngimg.com/uploads/face/face_PNG5669.png",
         "https://pngimg.com/uploads/face/face_PNG5660.png",
         "https://pngimg.com/uploads/face/face_PNG5664.png",
-        "https://ibeauty.pl/wp-content/uploads/2016/03/Seria_W_Vera.jpg",
-        "https://farm9.static.flickr.com/8517/8595284606_60c7f140cf_b.jpg",
-        "https://img2.freepng.ru/20180419/kfq/kisspng-businessperson-stock-photography-royalty-free-chan-5ad84ad0b95432.1605343115241243687591.jpg",
-        "https://img2.freepng.ru/20180716/uiy/kisspng-stock-photography-responsive-web-design-business-r-marriage-hall-5b4c3557df8e62.2645086515317210479157.jpg",
+        "hhttps://pngimg.com/uploads/face/face_PNG5669.png",
+        "https://c7.hotpng.com/preview/194/462/559/office-business-human-resource-management-recruitment-woman-business.jpg",
+        "https://carbis.ru/img/adv-girl.png",
+        "https://okna-okt.ru/wp-content/themes/okna/img/women.png",
+        "https://pngimage.net/wp-content/uploads/2018/06/%D0%B4%D0%B5%D0%B2%D1%83%D1%88%D0%BA%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-png-8.png",
     ];
 
     public function parseUserFile(String $file_name, int $level) {

@@ -92,9 +92,6 @@ class Search {
         }
 
         return $result;
-//        return self::mergeSearchResult($search_result);
-//        return self::mergeSearchResult($search_result);
-
     }
 
     public static function searchRoute($from, $to) {
