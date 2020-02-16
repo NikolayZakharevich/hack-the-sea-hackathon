@@ -110,5 +110,9 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="553" y="248" key="MultipleFileMergeDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1581836695854" />
+    <state x="531" y="243" key="RollbackChangesDialog" timestamp="1581845331145">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="531" y="243" key="RollbackChangesDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1581845331145" />
   </component>
 </project>
