@@ -88,6 +88,10 @@ class Search {
     }
 
     private static function getScore($needle, $words, $koef = 1) {
+        if (!$needle) {
+            return 0;
+        }
+
         $score = 0;
         if (in_array($needle, $words)) {
             $score += strlen($needle) * 2;
