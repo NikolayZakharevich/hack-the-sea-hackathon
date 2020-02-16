@@ -11,9 +11,7 @@ const CabinetLayout = ({tables}) => {
             </style>
             <g id="prefix__Layer_2">
                 {!!tables && tables.map(table => {
-                    return <clipPath id={"circleTable" + table.id}>
-                        <circle className="prefix__st14" cx={table.point_x} cy={table.point_y} r={44}/>
-                    </clipPath>
+                    return <circle className="prefix__st14" cx={table.point_x} cy={table.point_y} r={44}/>
                 })}
                 <path
                     className="prefix__st1"
@@ -209,7 +207,7 @@ const CabinetLayout = ({tables}) => {
                 {!!tables && tables.map(table => {
                     return <g id="prefix__Layer_3">
                         <text
-                            transform={"translate(" + (table.point_x - 30) + " " + (table.point_y) + ")"}
+                            transform={"translate(" + (table.point_x - 40) + " " + (+table.point_y + 15) + ")"}
                             className="prefix__st13"
                             key={table.id}
                         >
@@ -217,12 +215,13 @@ const CabinetLayout = ({tables}) => {
                         </text>
                         <image
                             xlinkHref={table.photo_url}
-                            width={"100"}
-                            height={"100"}
-                            clipPath={"url(#" + "circleTable" + table.id + ")"}
+                            width={"70"}
+                            height={"70"}
+                            x={table.point_x - 35}
+                            y={table.point_y - 50}
                         />
                         <text
-                            transform={"translate(" + (table.point_x - 30) + " " + (table.point_y + 5) + ")"}
+                            transform={"translate(" + (table.point_x - 30) + " " + (+table.point_y + 35) + ")"}
                             className="prefix__st13"
                             key={table.id + "_"}
                         >
