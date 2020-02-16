@@ -28,8 +28,8 @@ class App extends Component {
             currentFilter: {
                 coffeepoint: false,
                 bathroom: false,
-                workerRoom: false,
-                meetingRoom: false,
+                worker_room: false,
+                meeting_room: false,
                 warehouse: false
             },
 
@@ -43,7 +43,8 @@ class App extends Component {
                 points: [],
             },
             activeCabinet: {
-                tables: []
+                id: 0,
+                tables: [],
             }
         };
 
@@ -83,6 +84,13 @@ class App extends Component {
 
     onClickLeftBlock() {
         if (!this.state.filtersBlockShown) {
+            if (this.state.roadBlockShown) {
+                this.setState({roadBlockShown: false})
+            }
+
+            if (this.state.magniferBlockShow) {
+                this.setState({magniferBlockShow: false});
+            }
             this.setState({filtersBlockShown: true});
         } else {
             this.setState({filtersBlockShown: false});
@@ -92,7 +100,11 @@ class App extends Component {
     onClickRoadIcon() {
         if (!this.state.roadBlockShown) {
             if (this.state.magniferBlockShow) {
-                this.setState({magniferBlockShow: false})
+                this.setState({magniferBlockShow: false});
+            }
+
+            if (this.state.filtersBlockShown) {
+                this.setState({filtersBlockShown: false});
             }
             this.setState({roadBlockShown: true});
         } else {
@@ -104,6 +116,10 @@ class App extends Component {
         if (!this.state.magniferBlockShow) {
             if (this.state.roadBlockShown) {
                 this.setState({roadBlockShown: false})
+            }
+
+            if (this.state.filtersBlockShown) {
+                this.setState({filtersBlockShown: false});
             }
             this.setState({magniferBlockShow: true});
         } else {
@@ -118,6 +134,10 @@ class App extends Component {
     };
 
     setActiveLayout = activeLayout => {
+        if (activeLayout === LAYOUT_CABINET) {
+            this.setState({activeLayout: LAYOUT_FLOOR});
+        }
+
         this.setStateWithHistory({activeLayout})
     };
 
@@ -167,14 +187,14 @@ class App extends Component {
 
     setupWorkerRoomFilter = () => {
         const currentFilter = this.state.currentFilter;
-        currentFilter.workerRoom = !currentFilter.workerRoom;
+        currentFilter.worker_room = !currentFilter.worker_room;
         this.setState({currentFilter});
         this.prepareFilters()
     };
 
     setupMeetingRoomFilter = () => {
         const currentFilter = this.state.currentFilter;
-        currentFilter.workerRoom = !currentFilter.workerRoom;
+        currentFilter.meeting_room = !currentFilter.meeting_room;
         this.setState({currentFilter});
         this.prepareFilters()
     };
@@ -253,12 +273,15 @@ class App extends Component {
         const hasNoHistory = stateVersions.length === 0;
         const isFirstFloor = this.state.isFirstFloor;
         const isLastFloor = this.state.isLastFloor;
+        const currentFilter = this.state.currentFilter;
+        const activeLayout = this.state.activeLayout;
+        const activeCabinetId = this.state.activeCabinet.id;
 
         return (
             <div className="App">
                 <div className="topPanel">
                     <div className={"leftBlock " + (showFiltersBlock ? "filterShown bordered" : "")}>
-                        <div onClick={this.onClickLeftBlock}>
+                        <div onClick={() => {this.onClickLeftBlock()}}>
                             <img src={filterIcon}
                                  className={"icon bordered " + (showFiltersBlock ? "iconSelected" : "")}
                                  alt="filterIcon"/>
@@ -266,23 +289,28 @@ class App extends Component {
                         {showFiltersBlock &&
                         <div className="filtersBlock">
                             <label className="container">Coffee Point
-                                <input type="checkbox" onClick={this.setupCoffeePointFilter}/>
+                                <input id="coffee" type="checkbox"
+                                       checked={currentFilter.coffeepoint} onClick={this.setupCoffeePointFilter}/>
                                 <span className="checkmark"/>
                             </label>
-                            <label className="container">Bathroom
-                                <input type="checkbox" onClick={this.setupBathroomFilter}/>
+                            <label className="container">Toilet
+                                <input id="bathroom" type="checkbox"
+                                       checked={currentFilter.bathroom} onClick={this.setupBathroomFilter}/>
                                 <span className="checkmark"/>
                             </label>
                             <label className="container">Worker Room
-                                <input type="checkbox" onClick={this.setupWorkerRoomFilter}/>
+                                <input id="workerRoom" type="checkbox"
+                                       checked={currentFilter.worker_room} onClick={this.setupWorkerRoomFilter}/>
                                 <span className="checkmark"/>
                             </label>
                             <label className="container">Meeting Room
-                                <input type="checkbox" onClick={this.setupMeetingRoomFilter}/>
+                                <input id="meetingRoom" type="checkbox"
+                                       checked={currentFilter.meeting_room} onClick={this.setupMeetingRoomFilter}/>
                                 <span className="checkmark"/>
                             </label>
                             <label className="container">Warehouse
-                                <input type="checkbox" onClick={this.setupWarehouseFilter}/>
+                                <input type="checkbox"
+                                       checked={currentFilter.warehouse} onClick={this.setupWarehouseFilter}/>
                                 <span className="checkmark"/>
                             </label>
                         </div>
@@ -327,7 +355,7 @@ class App extends Component {
                             </div>
                         </div>
                         <div className="floorTitle">
-                            <span>Floor {curFloor}</span>
+                            <span>{"Floor" + curFloor + ((activeLayout && activeCabinetId !== 0)? "/Room " + activeCabinetId : "")}</span>
                         </div>
                         <div className={"backButton " + (hasNoHistory ? "buttonDisabled" : "")}
                              onClick={this.onClickBackButton}>
