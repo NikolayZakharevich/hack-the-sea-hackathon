@@ -131,10 +131,6 @@
     flex-direction: row;
 }
 
-.roadBlock .magniferBlock {
-    z-index: 1000;
-}
-
 .rbTitle {
     margin: 0.5rem 0 0 0.5rem;
 }

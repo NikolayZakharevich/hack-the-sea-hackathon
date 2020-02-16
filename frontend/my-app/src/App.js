@@ -7,6 +7,7 @@ import {filterResults, getFloor} from "./api/floor";
 import {search} from "./api/search";
 import FloorLayout from "./components/FloorLayout/FloorLayout";
 import CabinetLayout from "./components/CabinetLayout/CabinetLayout";
+import ShowRoadBlock from "./components/ShowRoadBlock/ShowRoadBlock";
 
 export const LAYOUT_FLOOR = 'LAYOUT_FLOOR';
 export const LAYOUT_CABINET = 'LAYOUT_CABINET';
@@ -38,7 +39,8 @@ class App extends Component {
             activeLayout: LAYOUT_FLOOR,
             activeFloor: {
                 id: START_FLOOR_ID,
-                cabinets: []
+                cabinets: [],
+                points: [],
             },
             activeCabinet: {
                 tables: []
@@ -64,6 +66,7 @@ class App extends Component {
         this.loadFloor = this.loadFloor.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.searchQuery = this.searchQuery.bind(this);
+        this.drawPath = this.drawPath.bind(this);
     }
 
     loadFloor = (id) => {
@@ -120,17 +123,15 @@ class App extends Component {
     setStateWithHistory = state => {
         const stateVersions = this.state.stateVersions.slice()
         stateVersions.push(this.state);
-        this.setState({...state, stateVersions})
+        this.setState({stateVersions})
     };
 
     setActiveLayout = activeLayout => {
-        this.setStateWithHistory({...this.state, activeLayout})
+        this.setStateWithHistory({activeLayout})
     };
 
-    setActiveFloor = ({id, cabinets}) => {
-        const newState = this.state;
-        newState.activeFloor = {id, cabinets};
-        this.setState(newState)
+    setActiveFloor = (floor) => {
+        this.setState({activeFloor: floor})
     };
 
     setActiveCabinet = ({id, tables}) => {
@@ -201,16 +202,22 @@ class App extends Component {
         console.log(value);
         search(value).then(
             r => {
+                console.log(r)
                 this.setState({searchResult: r.result})
             }
         )
     };
 
-    handleChange({ target }) {
+    drawPath(points) {
+        const floor = this.state.activeFloor;
+        this.setActiveFloor({...floor, points})
+    }
+
+    handleChange({target}) {
         if (target.value === "") {
             return
         }
-        
+
         const lastTime = this.state.lastTimeSearch;
         const curTime = new Date().getTime();
 
@@ -258,6 +265,7 @@ class App extends Component {
                 return <FloorLayout
                     id={activeFloor.id}
                     cabinets={activeFloor.cabinets}
+                    points={activeFloor.points}
                     setActiveLayout={this.setActiveLayout}
                     setActiveFloor={this.setActiveFloor}
                     setActiveCabinet={this.setActiveCabinet}
@@ -349,23 +357,7 @@ class App extends Component {
                                 </div>
                             </div>
                         </div>
-                        {showRoadBlock &&
-                        <div className="roadBlock">
-                            <div className="fromField inputField">
-                                <input placeholder="from:"/>
-                            </div>
-                            <div className="toField inputField">
-                                <input placeholder="to:"/>
-                            </div>
-                            <div className="additionalParameters">
-                                <div className="additionalParam"/>
-                                <div className="additionalParam"/>
-                            </div>
-                            <div className="sendBtn">
-                                Go
-                            </div>
-                        </div>
-                        }
+                        {showRoadBlock && <ShowRoadBlock drawPath={this.drawPath}/>}
                         {showMagniferBlock &&
                         <div className="magniferBlock">
                             <div className="mgLabel">
@@ -399,24 +391,27 @@ class App extends Component {
                 <div className="officeMap">
                     <div className="omTopPanel">
                         <div className="floorSwitcher">
-                            <div className={"toUp switcherBtn  " + (isLastFloor? "buttonDisabled" : "")} onClick={this.toUpTapped}>
+                            <div className={"toUp switcherBtn  " + (isLastFloor ? "buttonDisabled" : "")}
+                                 onClick={this.toUpTapped}>
                                 ▲
                             </div>
-                            <div className={"toDown switcherBtn  " + (isFirstFloor? "buttonDisabled" : "")} onClick={this.toDownTapped}>
+                            <div className={"toDown switcherBtn  " + (isFirstFloor ? "buttonDisabled" : "")}
+                                 onClick={this.toDownTapped}>
                                 ▼
                             </div>
                         </div>
                         <div className="floorTitle">
                             <span>Floor {curFloor}</span>
                         </div>
-                        <div className={"backButton " + (hasNoHistory? "buttonDisabled" : "")} onClick={this.onClickBackButton}>
+                        <div className={"backButton " + (hasNoHistory ? "buttonDisabled" : "")}
+                             onClick={this.onClickBackButton}>
                             Back
                         </div>
                     </div>
                     <div className="svg">
-                    {
-                        this.renderLayout()
-                    }
+                        {
+                            this.renderLayout()
+                        }
                     </div>
                 </div>
             </div>
