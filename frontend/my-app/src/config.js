@@ -1,9 +1,9 @@
 const configs = {
     production: {
         "app_id": 7109110,
-        "redirect_uri": "http://5314f526.ngrok.io/api",
+        "redirect_uri": "http://7a0bcd34.ngrok.io/api",
         "basepath": "/",
-        "api_basepath": "http://5314f526.ngrok.io/api/"
+        "api_basepath": "http://7a0bcd34.ngrok.io/api/"
     },
     local: {
         "app_id": 7109125,

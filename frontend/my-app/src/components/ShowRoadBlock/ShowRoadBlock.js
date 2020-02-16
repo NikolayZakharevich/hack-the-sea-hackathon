@@ -32,9 +32,10 @@ class ShowRoadBlock extends React.Component {
     onSendButtonClick = () => {
         const {from, to} = this.state;
         const {isStairsEnabled, isEscalateEnabled} = this.state;
-        const {drawPath} = this.props;
+        const {drawPath, setRoadBlockShown} = this.props;
         getRoute(from, to, isStairsEnabled ? 0 : 1, isEscalateEnabled ? 0 : 1).then(r => {
             if (r && r.path) {
+                setRoadBlockShown(false);
                 drawPath(r.path);
             }
         })

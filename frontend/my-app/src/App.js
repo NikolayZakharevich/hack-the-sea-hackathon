@@ -59,6 +59,7 @@ class App extends Component {
         this.prepareFilters = this.prepareFilters.bind(this);
         this.loadFloor = this.loadFloor.bind(this);
         this.drawPath = this.drawPath.bind(this);
+        this.setRoadBlockShown = this.setRoadBlockShown.bind(this);
     }
 
     loadFloor = (id) => {
@@ -112,6 +113,10 @@ class App extends Component {
         }
     }
 
+    setRoadBlockShown(value) {
+        this.setState({roadBlockShown: value})
+    }
+
     onClickMagniferIcon() {
         if (!this.state.magniferBlockShow) {
             if (this.state.roadBlockShown) {
@@ -142,8 +147,9 @@ class App extends Component {
     };
 
     setActiveFloor = activeFloor => {
-        if (!!this.state.activeFloor && !!this.state.activeFloor.points && this.state.activeFloor.points.length > 0) {
-            console.log(this.state.activeFloor.points);
+        const hasNoPoints = !activeFloor || !activeFloor.points;
+        const hadPoints = !!this.state.activeFloor && !!this.state.activeFloor.points && this.state.activeFloor.points.length > 0;
+        if (hasNoPoints && hadPoints) {
             activeFloor.points = this.state.activeFloor.points
         }
         this.setState({activeFloor})
@@ -343,7 +349,7 @@ class App extends Component {
                                 </div>
                             </div>
                         </div>
-                        {showRoadBlock && <ShowRoadBlock drawPath={this.drawPath}/>}
+                        {showRoadBlock && <ShowRoadBlock drawPath={this.drawPath} setRoadBlockShown={this.setRoadBlockShown}/>}
                         {showMagniferBlock && <SearchBlock setActiveLayout={this.setActiveLayout}
                                                            setActiveCabinet={this.setActiveCabinet}/>}
                     </div>
