@@ -131,10 +131,6 @@
     flex-direction: row;
 }
 
-.roadBlock .magniferBlock {
-    z-index: 1000;
-}
-
 .rbTitle {
     margin: 0.5rem 0 0 0.5rem;
 }
@@ -224,6 +220,15 @@
 
 .buttonDisabled {
     opacity: 30%;
+}
+
+.searchResult ul {
+    list-style-type: circle;
+}
+
+.searchResult ul li:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /*@keyframes App-logo-spin {*/

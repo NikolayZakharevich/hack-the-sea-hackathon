@@ -4,7 +4,7 @@ import {LAYOUT_CABINET} from "../../App";
 import {getCabinet} from "../../api/cabinet";
 import {isNumeric} from "../../tools/helpers";
 
-const FloorLayout = ({id, cabinets, setActiveLayout, setActiveFloor, setActiveCabinet}) => {
+const FloorLayout = ({id, cabinets, points, setActiveLayout, setActiveFloor, setActiveCabinet}) => {
 
     const onClickCabinet = id => {
         getCabinet(id).then(r => {
@@ -591,6 +591,23 @@ const FloorLayout = ({id, cabinets, setActiveLayout, setActiveFloor, setActiveCa
                             }
                         </g>
                     })}
+                    {!!points &&
+                    points.map((point, idx, arr) => {
+
+                        if (idx === 0) {
+                            return null;
+                        }
+
+                        const xPrev = arr[idx - 1].point_x;
+                        const yPrev = arr[idx - 1].point_y;
+                        const x = point.point_x;
+                        const y = point.point_y;
+
+                        return <line x1={xPrev} y1={yPrev}
+                                     x2={x} y2={y} stroke="black"
+                                     strokeWidth="10" strokeLinecap="round"
+                        />;
+                    })}
                 </g>
             </svg>
         )
@@ -1077,11 +1094,26 @@ const FloorLayout = ({id, cabinets, setActiveLayout, setActiveFloor, setActiveCa
                         }
                     </g>
                 })}
+                {!!points &&
+                points.map((point, idx, arr) => {
+
+                    if (idx === 0) {
+                        return null;
+                    }
+
+                    const xPrev = arr[idx - 1].point_x;
+                    const yPrev = arr[idx - 1].point_y;
+                    const x = point.point_x;
+                    const y = point.point_y;
+
+                    return <line x1={xPrev} y1={yPrev}
+                                 x2={x} y2={y} stroke="black"
+                                 strokeWidth="10" strokeLinecap="round"
+                    />;
+                })}
             </g>
         </svg>
     }
-
-
 };
 
 
