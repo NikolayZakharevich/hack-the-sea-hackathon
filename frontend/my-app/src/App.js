@@ -19,6 +19,8 @@ class App extends Component {
         super(props);
 
         this.state = {
+            stateVersions: [],
+
             filtersBlockShown: false,
             roadBlockShown: false,
             magniferBlockShow: false,
@@ -107,8 +109,14 @@ class App extends Component {
         }
     }
 
+    setStateWithHistory = state => {
+        const stateVersions = this.state.stateVersions.slice()
+        stateVersions.push(this.state);
+        this.setState({...state, stateVersions})
+    };
+
     setActiveLayout = activeLayout => {
-        this.setState({...this.state, activeLayout})
+        this.setStateWithHistory({...this.state, activeLayout})
     };
 
     setActiveFloor = ({id, cabinets}) => {
@@ -125,7 +133,6 @@ class App extends Component {
 
     filterResult = (filters) => {
         const id = this.state.activeFloor.id;
-        console.log(id);
         filterResults(id, filters).then(r => {
             this.setActiveFloor({id, cabinets: r.floor.cabinets})
         })
@@ -135,6 +142,16 @@ class App extends Component {
         const filters = this.state.currentFilter;
         this.filterResult(Object.keys(filters).filter(e => filters[e]).join("\,"));
     }
+
+    onClickBackButton = () => {
+        const versions = this.state.stateVersions.slice();
+        if (versions.length === 0) {
+            return;
+        }
+        const prevVersion = versions[versions.length - 1];
+        versions.pop();
+        this.setState(prevVersion)
+    };
 
     setupCoffeePointFilter = () => {
         const currentFilter = this.state.currentFilter;
@@ -242,7 +259,9 @@ class App extends Component {
         const showRoadBlock = this.state.roadBlockShown;
         const showMagniferBlock = this.state.magniferBlockShow;
         const curFloor = this.state.activeFloor.id;
+        const {stateVersions} = this.state;
 
+        const hasNoHistory = stateVersions.length === 0;
         let searchQuery = "";
 
         return (
@@ -345,7 +364,7 @@ class App extends Component {
                         <div className="floorTitle">
                             <span>Floor {curFloor}</span>
                         </div>
-                        <div className="backButton">
+                        <div className="backButton" onClick={this.onClickBackButton}>
                             Back
                         </div>
                     </div>
