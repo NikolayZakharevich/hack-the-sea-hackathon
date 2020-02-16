@@ -1,10 +1,14 @@
 import React from 'react';
 import "./FloorLayout.scss"
+import {getCabinet} from "../../api/cabinet";
 
 const FloorLayout = ({cabinets}) => {
 
-    const onClickCabinet = id => {
 
+    const onClickCabinet = id => {
+        getCabinet(id).then(r => {
+            console.log(r);
+        });
     }
 
     return (
@@ -624,6 +628,7 @@ const FloorLayout = ({cabinets}) => {
                     return <text
                         transform={"translate(" + (cabinet.point_x - 10) + " " + (cabinet.point_y - 10) + ")"}
                         className={cabinet.id}
+                        onClick={() => onClickCabinet(cabinet.id)}
                     >
                         {cabinet.name}
                     </text>
