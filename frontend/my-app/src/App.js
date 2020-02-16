@@ -25,7 +25,7 @@ class App extends Component {
             roadBlockShown: false,
             magniferBlockShow: false,
             currentFilter: {
-                coffeePoint: false,
+                coffeepoint: false,
                 bathroom: false,
                 workerRoom: false,
                 meetingRoom: false,
@@ -45,7 +45,11 @@ class App extends Component {
             },
             lastTimeSearch: 0,
             searchFieldValue: "",
-            searchResult: null
+            searchResult: {
+                users: null,
+                cabinet: null,
+                events: null,
+            }
         };
 
         this.onClickLeftBlock = this.onClickLeftBlock.bind(this);
@@ -159,7 +163,7 @@ class App extends Component {
 
     setupCoffeePointFilter = () => {
         const currentFilter = this.state.currentFilter;
-        currentFilter.coffeePoint = !currentFilter.coffeePoint;
+        currentFilter.coffeepoint = !currentFilter.coffeepoint;
         this.setState({currentFilter});
         this.prepareFilters()
     };
@@ -197,7 +201,6 @@ class App extends Component {
         console.log(value);
         search(value).then(
             r => {
-                console.log(r)
                 this.setState({searchResult: r.result})
             }
         )
@@ -207,17 +210,17 @@ class App extends Component {
         if (target.value === "") {
             return
         }
-
+        
         const lastTime = this.state.lastTimeSearch;
-        const curTime = new Date().toLocaleString();
+        const curTime = new Date().getTime();
 
         this.setState({searchFieldValue: target.value});
 
         if (curTime - lastTime >= 300) {
             this.searchQuery();
-        } else {
-            this.setState({lastTimeSearch: curTime})
         }
+
+        this.setState({lastTimeSearch: curTime})
     };
 
     toUpTapped = () => {
@@ -270,6 +273,13 @@ class App extends Component {
         }
     };
 
+    updateResultSearch() {
+        const result = this.state.searchResult;
+
+        result.users.map((item, i) => <li key={i}>item.name + " " + item.surname</li>);
+        result.cabinet.map((item, i) => <li key={i}>"cabinet " + item.id</li>);
+        // result.events.map((item, i) => <li key={i}>"event: " + item.name</li>);
+    }
 
     render() {
         const showFiltersBlock = this.state.filtersBlockShown;
@@ -282,6 +292,7 @@ class App extends Component {
         const isFirstFloor = this.state.isFirstFloor;
         const isLastFloor = this.state.isLastFloor;
         const searchResult = this.state.searchResult;
+        console.log(searchResult);
 
         return (
             <div className="App">
@@ -363,9 +374,19 @@ class App extends Component {
                             <div className="inputField">
                                 <input placeholder="What are you looking for?" size="38" onChange={this.handleChange}/>
                             </div>
-                            {searchResult !== null &&
+                            {searchResult && searchResult.users  && searchResult.cabinet && searchResult.events &&
                                 <div className="searchResult">
-                                    
+                                    <ul>
+                                        {
+                                            searchResult.users.map((item, i) => <li key={i}>{item.name + " " + item.surname}</li>)
+                                        }
+                                        {
+                                            searchResult.cabinet.map((item, i) => <li key={i}>{"cabinet " + item.id}</li>)
+                                        }
+                                        {
+                                            searchResult.events.map((item, i) => <li key={i}>{"events: " + item.name}</li>)
+                                        }
+                                    </ul>
                                 </div>
                             }
                             <div className="sendBtn">
