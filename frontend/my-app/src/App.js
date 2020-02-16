@@ -11,7 +11,7 @@ import CabinetLayout from "./components/CabinetLayout/CabinetLayout";
 export const LAYOUT_FLOOR = 'LAYOUT_FLOOR';
 export const LAYOUT_CABINET = 'LAYOUT_CABINET';
 
-const START_FLOOR_ID = 1
+const START_FLOOR_ID = 1;
 
 class App extends Component {
 
@@ -32,6 +32,7 @@ class App extends Component {
 
             activeLayout: LAYOUT_FLOOR,
             activeFloor: {
+                id: START_FLOOR_ID,
                 cabinets: []
             },
             activeCabinet: {
@@ -48,15 +49,16 @@ class App extends Component {
         this.setupMeetingRoomFilter = this.setupMeetingRoomFilter.bind(this);
         this.setupWarehouseFilter = this.setupWarehouseFilter.bind(this);
         this.prepareFilters = this.prepareFilters.bind(this);
+        this.loadFloor = this.loadFloor.bind(this);
     }
 
-    componentDidMount() {
-        getFloor(START_FLOOR_ID).then(r => {
+    loadFloor = (id) => {
+        getFloor(id).then(r => {
                 const isValidResponse = !!r && !!r.floor;
                 if (isValidResponse) {
                     const floor = r.floor;
                     if (!!floor.cabinets) {
-                        this.setActiveFloor({id: START_FLOOR_ID, cabinets: floor.cabinets});
+                        this.setActiveFloor({id: id, cabinets: floor.cabinets});
                     } else {
                         console.log('Failed to load cabinets')
                     }
@@ -65,6 +67,10 @@ class App extends Component {
                 }
             }
         );
+    };
+
+    componentDidMount() {
+        this.loadFloor(START_FLOOR_ID);
     }
 
     onClickLeftBlock() {
@@ -103,13 +109,13 @@ class App extends Component {
 
     setActiveFloor = ({id, cabinets}) => {
         const newState = this.state;
-        newState.activeFloor = {cabinets}
+        newState.activeFloor = {id, cabinets};
         this.setState(newState)
     };
 
     setActiveCabinet = ({tables}) => {
         const newState = this.state;
-        newState.activeCabinet = {tables}
+        newState.activeCabinet = {tables};
         this.setState(newState)
     };
 
@@ -169,6 +175,26 @@ class App extends Component {
         )
     };
 
+    toUpTapped = () => {
+        const curId = this.state.activeFloor.id;
+
+        if (curId >= 3) {
+            return;
+        }
+
+        this.loadFloor(curId + 2);
+    };
+
+    toDownTapped = () => {
+        const curId = this.state.activeFloor.id;
+
+        if (curId <= 1) {
+            return;
+        }
+
+        this.loadFloor(curId - 2);
+    };
+
     renderLayout = () => {
         const {activeLayout, activeFloor, activeCabinet} = this.state;
         switch (activeLayout) {
@@ -194,6 +220,7 @@ class App extends Component {
         const showFiltersBlock = this.state.filtersBlockShown;
         const showRoadBlock = this.state.roadBlockShown;
         const showMagniferBlock = this.state.magniferBlockShow;
+        const curFloor = this.state.activeFloor.id;
 
         let searchQuery = "";
 
@@ -285,9 +312,27 @@ class App extends Component {
                     </div>
                 </div>
                 <div className="officeMap">
+                    <div className="omTopPanel">
+                        <div className="floorSwitcher">
+                            <div className="toUp switcherBtn" onClick={this.toUpTapped}>
+                                ▲
+                            </div>
+                            <div className="toDown switcherBtn" onClick={this.toDownTapped}>
+                                ▼
+                            </div>
+                        </div>
+                        <div className="floorTitle">
+                            <span>Floor {curFloor}</span>
+                        </div>
+                        <div className="backButton">
+                            Back
+                        </div>
+                    </div>
+                    <div className="svg">
                     {
                         this.renderLayout()
                     }
+                    </div>
                 </div>
             </div>
         )
