@@ -141,7 +141,11 @@ class App extends Component {
         this.setStateWithHistory({activeLayout})
     };
 
-    setActiveFloor =activeFloor => {
+    setActiveFloor = activeFloor => {
+        if (!!this.state.activeFloor && !!this.state.activeFloor.points && this.state.activeFloor.points.length > 0) {
+            console.log(this.state.activeFloor.points);
+            activeFloor.points = this.state.activeFloor.points
+        }
         this.setState({activeFloor})
     };
 
@@ -281,7 +285,9 @@ class App extends Component {
             <div className="App">
                 <div className="topPanel">
                     <div className={"leftBlock " + (showFiltersBlock ? "filterShown bordered" : "")}>
-                        <div onClick={() => {this.onClickLeftBlock()}}>
+                        <div onClick={() => {
+                            this.onClickLeftBlock()
+                        }}>
                             <img src={filterIcon}
                                  className={"icon bordered " + (showFiltersBlock ? "iconSelected" : "")}
                                  alt="filterIcon"/>
@@ -355,7 +361,7 @@ class App extends Component {
                             </div>
                         </div>
                         <div className="floorTitle">
-                            <span>{"Floor" + curFloor + ((activeLayout && activeCabinetId !== 0)? "/Room " + activeCabinetId : "")}</span>
+                            <span>{"Floor" + curFloor + ((activeLayout && activeCabinetId !== 0) ? "/Room " + activeCabinetId : "")}</span>
                         </div>
                         <div className={"backButton " + (hasNoHistory ? "buttonDisabled" : "")}
                              onClick={this.onClickBackButton}>
