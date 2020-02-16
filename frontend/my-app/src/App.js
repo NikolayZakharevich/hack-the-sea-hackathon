@@ -4,7 +4,7 @@ import filterIcon from './static/filterIcon.png'
 import routeIcon from './static/routeIcon.png'
 import magniferIcon from './static/magniferIcon.png'
 import FloorLayout from "./components/FloorLayout/FloorLayout";
-import {filterResults, getFloor} from "./api/floor";
+import {filterResults} from "./api/floor";
 import {search} from "./api/search";
 
 class App extends Component {
@@ -27,7 +27,6 @@ class App extends Component {
         this.onClickLeftBlock = this.onClickLeftBlock.bind(this);
         this.onClickRoadIcon = this.onClickRoadIcon.bind(this);
         this.onClickMagniferIcon = this.onClickMagniferIcon.bind(this);
-        this.getCabinets = this.getCabinets.bind(this);
         this.setupCoffeePointFilter = this.setupCoffeePointFilter.bind(this);
         this.setupBathroomFilter = this.setupBathroomFilter.bind(this);
         this.setupRestRoomFilter = this.setupRestRoomFilter.bind(this);
@@ -62,14 +61,6 @@ class App extends Component {
             this.setState({magniferBlockShow: false});
         }
     }
-
-    getCabinets = id => {
-        getFloor(id).then(
-            r => {
-                this.setState({cabinets: r.floor.cabinets})
-            }
-        )
-    };
 
     filterResult = (id, filters) => {
         getFloor(id, filters).then(
@@ -113,7 +104,6 @@ class App extends Component {
         const showFiltersBlock = this.state.filtersBlockShown;
         const showRoadBlock = this.state.roadBlockShown;
         const showMagniferBlock = this.state.magniferBlockShow;
-        const cabinets = this.state.cabinets;
 
         let searchQuery = "";
 
@@ -197,9 +187,7 @@ class App extends Component {
                     </div>
                 </div>
                 <div className="officeMap">
-                    {cabinets &&
-                        <FloorLayout cabinets={cabinets}/>
-                    }
+                    <Main/>
                 </div>
             </div>
         )
