@@ -23,8 +23,9 @@ class UserEditController extends Controller {
         $user_floor   = (int)$request->get('floor');
         $user_cabinet = (int)$request->get('cabinet');
         $user_level   = (int)$request->get('level');
+        $photo_url    = (string)$request->get('photo_url');
 
-        $save_result = User::add($user_id, $user_name, $user_surname, $user_floor, $user_cabinet, $user_level);
+        $save_result = User::add($user_id, $user_name, $user_surname, $user_floor, $user_cabinet, $user_level, $photo_url);
         if (!$save_result) {
             return response()->json([
                 'response' => 'bad',

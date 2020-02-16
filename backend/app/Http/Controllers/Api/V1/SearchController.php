@@ -20,11 +20,4 @@ class SearchController extends Controller {
         ]);
     }
 
-    public function show(ApiRequest $request, int $id) {
-        $cabinet = Cabinet::get($id);
-        return response()->json([
-            'response' => 'ok',
-            'cabinet'  => $cabinet,
-        ]);
-    }
 }

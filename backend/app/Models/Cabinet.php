@@ -37,8 +37,11 @@ class Cabinet {
         if (!$cabinet_serialized) {
             return null;
         }
+        $cabinet_events = Event::getAllByCabinetId($id);
+        $cabinet = json_decode($cabinet_serialized, true);
 
-        return json_decode($cabinet_serialized, true);
+        $cabinet['events'] = $cabinet_events;
+        return $cabinet;
     }
 
     public static function getAll() {
