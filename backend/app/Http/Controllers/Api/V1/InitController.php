@@ -129,7 +129,7 @@ class InitController extends Controller
                         "photo_url" => "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
                     ];
                 }
-                Cabinet::add($cabinet_id, $fqgit qloor, $level, $level_count, "worker_room", $tables_data);
+                Cabinet::add($cabinet_id, $floor, $level, $level_count, "worker_room", $tables_data);
             }
         }
     }
@@ -139,6 +139,7 @@ class InitController extends Controller
         self::parseUser();
         self::parseFloors();
         self::parseCabinets();
+        Cabinet::fixCabs();
         return response()->json([
             'response' => 'ok'
         ]);
