@@ -7,10 +7,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiRequest;
 use App\Models\Cabinet;
+use App\Models\Event;
 use App\Models\Floor;
+use App\Models\Graph;
 use App\Models\User;
 use Doctrine\DBAL\Schema\Table;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
+use Illuminate\Support\Facades\Redis;
 
 class InitController extends Controller
 {
@@ -111,9 +114,9 @@ class InitController extends Controller
                 foreach($cabinet as $key => $user) {
                     $table_id = 1 + $key;
                     if ($level == 2) {
-                        $table_id = 13 + ($table_id % 12);
+                        $table_id += 11;
                     }
-                    if ($table_id == 15) {
+                    if ($table_id >= 15) {
                         $table_id += 1;
                     }
                     list($name, $surname) = explode(" ", $user);
@@ -133,11 +136,69 @@ class InitController extends Controller
         }
     }
 
+
+
+    public function parseEvents() {
+        $content = file_get_contents(__DIR__ . "/../../../../src/events/events");
+        $cabinets = explode("\n", $content);
+
+        foreach ($cabinets as $cabinet) {
+            $test = explode(";", $cabinet);
+            if (sizeof($test) == 5) {
+                list($user_string, $cabinet_id, $time_from, $time_to, $name) = $test;
+
+                $user_list = explode("_", $user_string);
+                $users_data = [];
+                for ($i = 0; $i < sizeof($user_list); $i+=3) {
+                    $users_data[] = [
+                        "name" => $user_list[$i],
+                        "surname" => $user_list[$i + 1],
+                        "id" => $user_list[$i + 2],
+                    ];
+                }
+                Event::add($users_data, $cabinet_id, $time_from, $time_to, $name);
+            }
+        }
+    }
+
+    public function parseNodes() {
+        $content = file_get_contents(__DIR__ . "/../../../../src/graphs/floor_nodes");
+        $cabinets = explode("\n", $content);
+
+        $graph = new Graph();
+
+        foreach ($cabinets as $cabinet) {
+            $test = explode(";", $cabinet);
+            if (sizeof($test) == 6) {
+                list($cabinet_id, $point_x, $point_y, $floor, $type, $id) = $test;
+                $graph->addNodes($type, (int)$floor, (int)$point_x, (int)$point_y, $cabinet_id);
+            }
+        }
+        info(sizeof($graph->nodes));
+
+        $content = file_get_contents(__DIR__ . "/../../../../src/graphs/nodes");
+        $edges = explode("\n", $content);
+        foreach ($edges as $edge) {
+            $test = explode(";", $edge);
+            if (sizeof($test) == 2) {
+                list($from, $to) = $test;
+                $graph->addEdges((int)$from, (int)$to);
+            }
+        }
+        info($graph->nodes);
+        $graph->dejskta(22, 7, true, false);
+
+
+    }
+
     public function index(ApiRequest $request)
     {
+        Redis::flushAll();
         self::parseUser();
         self::parseFloors();
         self::parseCabinets();
+        self::parseEvents();
+        self::parseNodes();
         Cabinet::fixCabs();
         return response()->json([
             'response' => 'ok'
