@@ -1,23 +1,5 @@
 .SearchBlock {
 
-  .mgLabel {
-    margin: 0.2rem 0.5rem 0 0.5rem;
-  }
-
-  .inputField {
-    margin: 0.8rem 1rem 0 0.5rem;
-    height: 1.5rem;
-  }
-
-  .searchResult ul {
-    list-style-type: circle;
-  }
-
-  .searchResult ul li:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-
   &__sendBtn {
     width: 40%;
     height: 1.5rem;
@@ -28,5 +10,23 @@
     border-radius: 0.5rem;
   }
 
-
 }
+
+.mgLabel {
+  margin: 0.2rem 0.5rem 0 0.5rem;
+}
+
+.inputField {
+  margin: 0.8rem 1rem 0 0.5rem;
+  height: 1.5rem;
+}
+
+.searchResult ul {
+  list-style-type: circle;
+}
+
+.searchResult ul li:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+

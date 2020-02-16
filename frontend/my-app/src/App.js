@@ -309,7 +309,8 @@ class App extends Component {
                             </div>
                         </div>
                         {showRoadBlock && <ShowRoadBlock drawPath={this.drawPath}/>}
-                        {showMagniferBlock && <SearchBlock/>}
+                        {showMagniferBlock && <SearchBlock setActiveLayout={this.setActiveLayout}
+                                                           setActiveCabinet={this.setActiveCabinet}/>}
                     </div>
                 </div>
                 <div className="officeMap">
