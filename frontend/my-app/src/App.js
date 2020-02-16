@@ -103,6 +103,7 @@ class App extends Component {
 
     setActiveFloor = ({id, cabinets}) => {
         const newState = this.state;
+        console.log(cabinets)
         newState.activeFloor = {id, cabinets}
         this.setState(newState)
     };
@@ -117,7 +118,7 @@ class App extends Component {
         const id = this.state.activeFloor.id;
         console.log(id);
         filterResults(id, filters).then(r => {
-            this.setActiveFloor({id, cabinets: r.cabinets})
+            this.setActiveFloor({id, cabinets: r.floor.cabinets})
         })
     };
 
