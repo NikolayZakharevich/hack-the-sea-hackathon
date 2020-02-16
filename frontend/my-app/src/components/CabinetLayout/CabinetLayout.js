@@ -73,7 +73,7 @@ const CabinetLayout = ({tables}) => {
                     transform="translate(274.572 392.861)"
                     className="prefix__st9 prefix__st10 prefix__st11"
                 >
-                    {"2"}
+                    {""}
                 </text>
                 <text
                     transform="translate(204.484 393.732)"
@@ -141,7 +141,7 @@ const CabinetLayout = ({tables}) => {
                     transform="translate(582.881 396.204)"
                     className="prefix__st9 prefix__st10 prefix__st11"
                 >
-                    {"2"}
+                    {""}
                 </text>
                 <text
                     transform="translate(513.094 390.075)"
@@ -205,7 +205,7 @@ const CabinetLayout = ({tables}) => {
                     d="M633.1 903.6h74V723.8h-53.3V852h-20.7V903.6zm2.3-49.2h7.6v46.8h-7.6v-46.8zm18.4 0v46.8h-8.3v-46.8h8.3zm50.9-98.7v11.7h-48.5v-11.7h48.5zm-48.5-2.4v-11.7h48.5v11.7h-48.5zm48.5 16.5v11.6h-48.5v-11.6h48.5zm0 14v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5V812h48.5zm0 14.1v11.8h-48.5v-11.8h48.5zm-48.5-100h48.5v13.2h-48.5v-13.2zM704.7 852h-48.5v-11.7h48.5V852zm0 49.2h-48.5v-46.8h48.5v46.8z"
                 />
                 {!!tables && tables.map(table => {
-                    const imageX = (table.id <= 12 && (table.id - 1)) % 6 <= 2 ? table.point_x - 70 : table.point_x - (-10);
+                    const imageX = (table.id <= 12 && (table.id - 1)) % 6 <= 2 ? table.point_x - 65 : table.point_x - (-15);
 
                     return <g id="prefix__Layer_3">
                         <image
