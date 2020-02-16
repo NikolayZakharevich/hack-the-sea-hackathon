@@ -123,21 +123,19 @@ class App extends Component {
     setStateWithHistory = state => {
         const stateVersions = this.state.stateVersions.slice()
         stateVersions.push(this.state);
-        this.setState({stateVersions})
+        this.setState({...state, stateVersions})
     };
 
     setActiveLayout = activeLayout => {
         this.setStateWithHistory({activeLayout})
     };
 
-    setActiveFloor = (floor) => {
-        this.setState({activeFloor: floor})
+    setActiveFloor =activeFloor => {
+        this.setState({activeFloor})
     };
 
-    setActiveCabinet = ({id, tables}) => {
-        const newState = this.state;
-        newState.activeCabinet = {id, tables};
-        this.setState(newState)
+    setActiveCabinet = activeCabinet => {
+        this.setState({activeCabinet})
     };
 
     filterResult = (filters) => {
@@ -199,10 +197,8 @@ class App extends Component {
 
     searchQuery() {
         const value = this.state.searchFieldValue;
-        console.log(value);
         search(value).then(
             r => {
-                console.log(r)
                 this.setState({searchResult: r.result})
             }
         )
@@ -300,7 +296,6 @@ class App extends Component {
         const isFirstFloor = this.state.isFirstFloor;
         const isLastFloor = this.state.isLastFloor;
         const searchResult = this.state.searchResult;
-        console.log(searchResult);
 
         return (
             <div className="App">
