@@ -234,6 +234,7 @@ class App extends Component {
             case LAYOUT_CABINET:
                 return <CabinetLayout
                     id={activeCabinet.id}
+                    level={activeCabinet.level}
                     tables={activeCabinet.tables}
                     setActiveLayout={this.setActiveLayout}
                     setActiveFloor={this.setActiveFloor}

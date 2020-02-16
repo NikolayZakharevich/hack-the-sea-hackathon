@@ -19,7 +19,7 @@ class CabinetController extends Controller {
     }
 
     public function show(ApiRequest $request, string $id) {
-        $level = $request->get('level') ?: 1;
+        $level = $request->get('level') ?: 2;
         $cabinet = Cabinet::get($id, $level);
 
         return response()->json([

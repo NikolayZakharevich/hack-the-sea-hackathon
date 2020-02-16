@@ -145,7 +145,7 @@ class InitController extends Controller
                 foreach($cabinet as $key => $user) {
                     $table_id = 1 + $key;
                     if ($level == 2) {
-                        $table_id += 11;
+                        $table_id = 12 + (($table_id % 11) ?: 11);
                     }
                     if ($table_id >= 15) {
                         $table_id += 1;
