@@ -7,10 +7,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiRequest;
 use App\Models\Cabinet;
+use App\Models\Event;
 use App\Models\Floor;
+use App\Models\Graph;
 use App\Models\User;
 use Doctrine\DBAL\Schema\Table;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
+use Illuminate\Support\Facades\Redis;
 
 class InitController extends Controller
 {
@@ -20,6 +23,16 @@ class InitController extends Controller
     static $tableIdToPoints = [];
     static $cabinetIdToType = [];
     static $current_id = 0;
+    static $random_photo = [
+        "https://pngimg.com/uploads/face/face_PNG5669.png",
+        "https://pngimg.com/uploads/face/face_PNG5660.png",
+        "https://pngimg.com/uploads/face/face_PNG5664.png",
+        "hhttps://pngimg.com/uploads/face/face_PNG5669.png",
+        "https://c7.hotpng.com/preview/194/462/559/office-business-human-resource-management-recruitment-woman-business.jpg",
+        "https://carbis.ru/img/adv-girl.png",
+        "https://okna-okt.ru/wp-content/themes/okna/img/women.png",
+        "https://pngimage.net/wp-content/uploads/2018/06/%D0%B4%D0%B5%D0%B2%D1%83%D1%88%D0%BA%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-png-8.png",
+    ];
 
     public function parseUserFile(String $file_name, int $level) {
         $content = file_get_contents($file_name);
@@ -29,7 +42,7 @@ class InitController extends Controller
             if (sizeof($test) == 3) {
                 list($cabinet_id, $surname, $name) = $test;
                 $floor = substr($cabinet_id, 0, 1);
-                User::create($name, $surname, $floor, $cabinet_id, $level, "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg");
+                User::create($name, $surname, $floor, $cabinet_id, $level, self::$random_photo[mt_rand(0, sizeof(self::$random_photo) - 1)]);
                 self::$nameToId[$name." ".$surname] = self::$current_id++;
                 self::$cabinetToWorkers[$cabinet_id][$level][] = $name." ".$surname;
             } elseif(sizeof($test) == 1) {
@@ -111,9 +124,9 @@ class InitController extends Controller
                 foreach($cabinet as $key => $user) {
                     $table_id = 1 + $key;
                     if ($level == 2) {
-                        $table_id = 13 + ($table_id % 12);
+                        $table_id += 11;
                     }
-                    if ($table_id == 15) {
+                    if ($table_id >= 15) {
                         $table_id += 1;
                     }
                     list($name, $surname) = explode(" ", $user);
@@ -125,7 +138,7 @@ class InitController extends Controller
                         "point_x" => $table["point_x"],
                         "point_y" => $table["point_y"],
                         "id" => $table_id,
-                        "photo_url" => "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
+                        "photo_url" => self::$random_photo[mt_rand(0, sizeof(self::$random_photo) - 1)],
                     ];
                 }
                 Cabinet::add($cabinet_id, $floor, $level, $level_count, "worker_room", $tables_data);
@@ -133,11 +146,69 @@ class InitController extends Controller
         }
     }
 
+
+
+    public function parseEvents() {
+        $content = file_get_contents(__DIR__ . "/../../../../src/events/events");
+        $cabinets = explode("\n", $content);
+
+        foreach ($cabinets as $cabinet) {
+            $test = explode(";", $cabinet);
+            if (sizeof($test) == 5) {
+                list($user_string, $cabinet_id, $time_from, $time_to, $name) = $test;
+
+                $user_list = explode("_", $user_string);
+                $users_data = [];
+                for ($i = 0; $i < sizeof($user_list); $i+=3) {
+                    $users_data[] = [
+                        "name" => $user_list[$i],
+                        "surname" => $user_list[$i + 1],
+                        "id" => $user_list[$i + 2],
+                    ];
+                }
+                Event::add($users_data, $cabinet_id, $time_from, $time_to, $name);
+            }
+        }
+    }
+
+    public function parseNodes() {
+        $content = file_get_contents(__DIR__ . "/../../../../src/graphs/floor_nodes");
+        $cabinets = explode("\n", $content);
+
+        $graph = new Graph();
+
+        foreach ($cabinets as $cabinet) {
+            $test = explode(";", $cabinet);
+            if (sizeof($test) == 6) {
+                list($cabinet_id, $point_x, $point_y, $floor, $type, $id) = $test;
+                $graph->addNodes($type, (int)$floor, (int)$point_x, (int)$point_y, $cabinet_id);
+            }
+        }
+        info(sizeof($graph->nodes));
+
+        $content = file_get_contents(__DIR__ . "/../../../../src/graphs/nodes");
+        $edges = explode("\n", $content);
+        foreach ($edges as $edge) {
+            $test = explode(";", $edge);
+            if (sizeof($test) == 2) {
+                list($from, $to) = $test;
+                $graph->addEdges((int)$from, (int)$to);
+            }
+        }
+        info($graph->nodes);
+        $graph->dejskta(22, 7, true, false);
+
+
+    }
+
     public function index(ApiRequest $request)
     {
+        Redis::flushAll();
         self::parseUser();
         self::parseFloors();
         self::parseCabinets();
+        self::parseEvents();
+        self::parseNodes();
         Cabinet::fixCabs();
         return response()->json([
             'response' => 'ok'

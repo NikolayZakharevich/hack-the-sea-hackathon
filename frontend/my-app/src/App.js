@@ -113,9 +113,9 @@ class App extends Component {
         this.setState(newState)
     };
 
-    setActiveCabinet = ({tables}) => {
+    setActiveCabinet = ({id, tables}) => {
         const newState = this.state;
-        newState.activeCabinet = {tables};
+        newState.activeCabinet = {id, tables};
         this.setState(newState)
     };
 
@@ -123,7 +123,7 @@ class App extends Component {
         const id = this.state.activeFloor.id;
         console.log(id);
         filterResults(id, filters).then(r => {
-            this.setActiveFloor({id, cabinets: r.cabinets})
+            this.setActiveFloor({id, cabinets: r.floor.cabinets})
         })
     };
 

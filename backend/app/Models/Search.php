@@ -92,9 +92,6 @@ class Search {
         }
 
         return $result;
-//        return self::mergeSearchResult($search_result);
-//        return self::mergeSearchResult($search_result);
-
     }
 
     public static function searchRoute($from, $to) {
@@ -130,8 +127,6 @@ class Search {
         }
 
         arsort($result);
-        echo implode(',', array_keys($result)) . "\n";
-        echo implode(',', $result) . "\n";
         return array_keys($result);
     }
 
