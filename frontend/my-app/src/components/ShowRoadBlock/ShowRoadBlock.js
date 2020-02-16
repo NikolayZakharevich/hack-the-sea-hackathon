@@ -10,7 +10,15 @@ class ShowRoadBlock extends React.Component {
         this.state = {
             from: null,
             to: null,
-        }
+            isStairsEnabled: false,
+            isEscalateEnabled: false,
+        };
+
+        this.onChangeFromInput = this.onChangeFromInput.bind(this);
+        this.onChangeToInput = this.onChangeToInput.bind(this);
+        this.onSendButtonClick = this.onSendButtonClick.bind(this);
+        this.onStairs = this.onStairs.bind(this);
+        this.onEscalate = this.onEscalate.bind(this);
     }
 
     onChangeFromInput = e => {
@@ -31,7 +39,20 @@ class ShowRoadBlock extends React.Component {
         })
     };
 
+    onStairs = () => {
+        const isStairsEnabled = this.state.isStairsEnabled;
+        this.setState({isStairsEnabled: !isStairsEnabled})
+    };
+
+    onEscalate = () => {
+        const isEscalateEnabled = this.state.isEscalateEnabled;
+        this.setState({isEscalateEnabled: !isEscalateEnabled})
+    };
+
     render() {
+        const onStairs = this.state.isStairsEnabled;
+        const onEscalate = this.state.isEscalateEnabled;
+
         return <div className="ShowRoadBlock__roadBlock">
             <div className="ShowRoadBlock__fromField ShowRoadBlock__inputField">
                 <input placeholder="from:" onChange={this.onChangeFromInput}/>
@@ -40,8 +61,14 @@ class ShowRoadBlock extends React.Component {
                 <input placeholder="to:" onChange={this.onChangeToInput}/>
             </div>
             <div className="ShowRoadBlock__additionalParameters">
-                <div className="ShowRoadBlock__additionalParam"/>
-                <div className="ShowRoadBlock__additionalParam"/>
+                <div className="ShowRoadBlock__additionalParam" onClick={this.onStairs}>
+                    <div className={"ShowRoadBlock__iconAdParam " + (onStairs ? "ShowRoadBlock__filled" : "")}/>
+                    <div className="ShowRoadBlock__textAdParam">Use stairs</div>
+                </div>
+                <div className="ShowRoadBlock__additionalParam" onClick={this.onEscalate}>
+                    <div className={"ShowRoadBlock__iconAdParam " + (onEscalate ? "ShowRoadBlock__filled" : "")}/>
+                    <div className="ShowRoadBlock__textAdParam">Use escalator</div>
+                </div>
             </div>
             <div className="ShowRoadBlock__sendBtn" onClick={this.onSendButtonClick}>
                 Go

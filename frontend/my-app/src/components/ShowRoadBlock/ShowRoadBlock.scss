@@ -29,4 +29,39 @@
     background-color: #2196F3;
     border-radius: 0.5rem;
   }
+
+  &__additionalParameters {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  &__additionalParam {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  &__additionalParam:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &__iconAdParam {
+    margin-right: 0.2rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 0.2rem;
+    border: black solid 1px;
+  }
+
+  &__textAdParam {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  &__filled {
+    background-color: black;
+  }
 }
