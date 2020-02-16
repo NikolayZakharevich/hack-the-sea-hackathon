@@ -4,7 +4,7 @@ import routes from './routes'
 
 export default function configureRouter() {
     const router = createRouter(routes, {
-        defaultRoute: 'inbox'
+        defaultRoute: '#/floor/1'
     });
 
     router.usePlugin(
