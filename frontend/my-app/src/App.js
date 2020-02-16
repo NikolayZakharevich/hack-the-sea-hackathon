@@ -37,7 +37,9 @@ class App extends Component {
             },
             activeCabinet: {
                 tables: []
-            }
+            },
+            lastTimeSearch: 0,
+            searchFieldValue: "",
         };
 
         this.onClickLeftBlock = this.onClickLeftBlock.bind(this);
@@ -50,6 +52,8 @@ class App extends Component {
         this.setupWarehouseFilter = this.setupWarehouseFilter.bind(this);
         this.prepareFilters = this.prepareFilters.bind(this);
         this.loadFloor = this.loadFloor.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.searchQuery = this.searchQuery.bind(this);
     }
 
     loadFloor = (id) => {
@@ -167,12 +171,29 @@ class App extends Component {
         this.prepareFilters()
     };
 
-    searchQuery = str => {
-        search(str).then(
+    searchQuery() {
+        const value = this.state.searchFieldValue;
+        console.log(value);
+        search(value).then(
             r => {
-                this.setState({activeCabinets: r.result})
+                console.log(r)
+                // this.setState({activeCabinets: r.result})
             }
         )
+    };
+
+    handleChange({ target }) {
+        const lastTime = this.state.lastTimeSearch;
+        const curTime = new Date().toLocaleString();
+
+        this.setState({searchFieldValue: target.value});
+
+        // console.log(value);
+        if (curTime - lastTime >= 300) {
+            this.searchQuery();
+        } else {
+            this.setState({lastTimeSearch: curTime})
+        }
     };
 
     toUpTapped = () => {
@@ -302,9 +323,9 @@ class App extends Component {
                                 <span>Example: Cabinet 147, Ivanov Petr, Banquet</span>
                             </div>
                             <div className="inputField">
-                                <input placeholder="What are you looking for?" size="38" value={searchQuery}/>
+                                <input placeholder="What are you looking for?" size="38" onChange={this.handleChange}/>
                             </div>
-                            <div className="sendBtn" onClick={search(searchQuery)}>
+                            <div className="sendBtn" onClick={this.searchQuery(searchQuery)}>
                                 Find
                             </div>
                         </div>
