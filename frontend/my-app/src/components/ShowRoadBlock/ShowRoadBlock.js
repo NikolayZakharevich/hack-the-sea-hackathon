@@ -10,7 +10,7 @@ class ShowRoadBlock extends React.Component {
         this.state = {
             from: null,
             to: null,
-            isStairsEnabled: false,
+            isStairsEnabled: true,
             isEscalateEnabled: false,
         };
 
