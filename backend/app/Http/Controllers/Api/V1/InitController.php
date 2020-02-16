@@ -23,6 +23,15 @@ class InitController extends Controller
     static $tableIdToPoints = [];
     static $cabinetIdToType = [];
     static $current_id = 0;
+    static $random_photo = [
+        "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
+        "https://pngimg.com/uploads/face/face_PNG5669.png",
+        "https://pngimg.com/uploads/face/face_PNG5660.png",
+        "https://pngimg.com/uploads/face/face_PNG5664.png",
+        "https://i.pinimg.com/originals/c5/f3/19/c5f319a8029c2fabfa20397824881c44.png",
+        "https://lh3.googleusercontent.com/proxy/hidAzDb4bpwAx1Tr95BOl2gw4EkvrsjjUBVH8P0nnjsoK1WThzpyFeQOPncHkX_y_zvrlqoJ2eLsxUV_BWJW2MmlM1S_Qd337y77JgosNQ",
+        "https://c7.hotpng.com/preview/951/115/814/stock-photography-royalty-free-happy-woman-thumbnail.jpg",
+    ];
 
     public function parseUserFile(String $file_name, int $level) {
         $content = file_get_contents($file_name);
@@ -32,7 +41,7 @@ class InitController extends Controller
             if (sizeof($test) == 3) {
                 list($cabinet_id, $surname, $name) = $test;
                 $floor = substr($cabinet_id, 0, 1);
-                User::create($name, $surname, $floor, $cabinet_id, $level, "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg");
+                User::create($name, $surname, $floor, $cabinet_id, $level, self::$random_photo[mt_rand(0, sizeof(self::$random_photo) - 1)]);
                 self::$nameToId[$name." ".$surname] = self::$current_id++;
                 self::$cabinetToWorkers[$cabinet_id][$level][] = $name." ".$surname;
             } elseif(sizeof($test) == 1) {
@@ -128,7 +137,7 @@ class InitController extends Controller
                         "point_x" => $table["point_x"],
                         "point_y" => $table["point_y"],
                         "id" => $table_id,
-                        "photo_url" => "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
+                        "photo_url" => self::$random_photo[mt_rand(0, sizeof(self::$random_photo) - 1)],
                     ];
                 }
                 Cabinet::add($cabinet_id, $floor, $level, $level_count, "worker_room", $tables_data);
