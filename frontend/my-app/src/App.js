@@ -238,6 +238,7 @@ class App extends Component {
         switch (activeLayout) {
             case LAYOUT_FLOOR:
                 return <FloorLayout
+                    id={activeFloor.id}
                     cabinets={activeFloor.cabinets}
                     setActiveLayout={this.setActiveLayout}
                     setActiveFloor={this.setActiveFloor}
@@ -245,6 +246,7 @@ class App extends Component {
                 />;
             case LAYOUT_CABINET:
                 return <CabinetLayout
+                    id={activeCabinet.id}
                     tables={activeCabinet.tables}
                     setActiveLayout={this.setActiveLayout}
                     setActiveFloor={this.setActiveFloor}
