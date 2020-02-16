@@ -33,7 +33,7 @@ class FloorLayout extends React.Component {
 
         const cabinets = this.state.cabinets;
 
-        return <svg viewBox="0 0 842 1191">
+        return <svg viewBox="210 180 450 950">
             <style>
                 {
                     ".prefix__st1,.prefix__st2{fill:none;stroke-miterlimit:10}.prefix__st1{stroke:#000;stroke-width:.12;stroke-linecap:round;stroke-linejoin:round}.prefix__st2{stroke:#939393;stroke-width:.5}.prefix__st3{fill:#939393}.prefix__st4{fill:none;stroke:#939393;stroke-width:.75;stroke-miterlimit:10}.prefix__st5{font-family:&apos;Roboto-Black&apos;}.prefix__st6{font-size:13.0625px}.prefix__st11,.prefix__st7{fill:none;stroke:#000;stroke-width:1.5;stroke-miterlimit:10}.prefix__st11{fill:#939393;stroke:#939393;stroke-width:.5}"
