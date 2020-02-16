@@ -122,7 +122,7 @@ class App extends Component {
     setActiveFloor = ({id, cabinets}) => {
         const newState = this.state;
         newState.activeFloor = {id, cabinets};
-        this.setState(newState)
+        this.setStateWithHistory(newState)
     };
 
     setActiveCabinet = ({id, tables}) => {
@@ -205,7 +205,6 @@ class App extends Component {
 
         this.setState({searchFieldValue: target.value});
 
-        // console.log(value);
         if (curTime - lastTime >= 300) {
             this.searchQuery();
         } else {
