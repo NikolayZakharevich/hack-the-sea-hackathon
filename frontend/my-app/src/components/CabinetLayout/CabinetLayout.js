@@ -206,22 +206,22 @@ const CabinetLayout = ({tables}) => {
                 />
                 {!!tables && tables.map(table => {
                     return <g id="prefix__Layer_3">
+                        <image
+                            xlinkHref={table.photo_url}
+                            width={"70"}
+                            height={"70"}
+                            x={table.point_x - 55}
+                            y={table.point_y - 50}
+                        />
                         <text
-                            transform={"translate(" + (table.point_x - 40) + " " + (+table.point_y + 15) + ")"}
+                            transform={"translate(" + (table.point_x - 40) + " " + (+table.point_y + 45) + ")"}
                             className="prefix__st13"
                             key={table.id}
                         >
                             {table.name}
                         </text>
-                        <image
-                            xlinkHref={table.photo_url}
-                            width={"70"}
-                            height={"70"}
-                            x={table.point_x - 35}
-                            y={table.point_y - 50}
-                        />
                         <text
-                            transform={"translate(" + (table.point_x - 30) + " " + (+table.point_y + 35) + ")"}
+                            transform={"translate(" + (table.point_x - 30) + " " + (+table.point_y + 65) + ")"}
                             className="prefix__st13"
                             key={table.id + "_"}
                         >

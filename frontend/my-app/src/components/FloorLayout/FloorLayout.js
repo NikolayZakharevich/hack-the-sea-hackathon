@@ -5,7 +5,6 @@ import {getCabinet} from "../../api/cabinet";
 
 const FloorLayout = ({cabinets, setActiveLayout, setActiveFloor, setActiveCabinet}) => {
 
-    console.log(cabinets);
     const onClickCabinet = id => {
         getCabinet(id).then(r => {
                 if (r && r.cabinet) {
