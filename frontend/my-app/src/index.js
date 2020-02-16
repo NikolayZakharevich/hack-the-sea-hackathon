@@ -1,10 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import ReactDOM from 'react-dom'
+import React from 'react'
+import App from './App'
+import { RouterProvider } from 'react-router5'
+import createRouter from './create-router'
 import "typeface-comfortaa";
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const router = createRouter()
 
-serviceWorker.unregister();
+router.start(() => {
+    ReactDOM.render((
+        <RouterProvider router={router}>
+            <App />
+        </RouterProvider>
+    ), document.getElementById('root'))
+});

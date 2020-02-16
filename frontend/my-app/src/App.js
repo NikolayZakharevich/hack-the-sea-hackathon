@@ -136,8 +136,11 @@ class App extends Component {
                         }
                         {showMagniferBlock &&
                         <div className="magniferBlock">
+                            <div className="mgLabel">
+                                <span>Example: Cabinet 147, Ivanov Petr, Banquet</span>
+                            </div>
                             <div className="inputField">
-                                <input placeholder="What are you looking for?"/>
+                                <input placeholder="What are you looking for?" size="38"/>
                             </div>
                             <div className="sendBtn">
                                 Find
