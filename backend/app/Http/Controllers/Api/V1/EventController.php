@@ -12,8 +12,6 @@ use App\Models\Search;
 class EventController extends Controller {
 
     public function index(ApiRequest $request) {
-        $event = Event::add([], '105', time() + 3600, time() + 7200, 'party');
-
         return response()->json([
             'response' => 'ok',
             'result' => Event::getAll(),
