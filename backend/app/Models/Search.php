@@ -44,17 +44,17 @@ class Search {
 
         $result['users'] = $users_scored;
 
-        $cabinets = Cabinet::getAll();
+        $cabinets        = Cabinet::getAll();
         $cabinets_scores = [];
         foreach ($cabinets as $cabinet) {
             if (!array_key_exists('name', $cabinet)) {
                 continue;
             }
 
-            $cabinet = (array)$cabinet;
-            $name  = self::toLower($cabinet['name']);
-            $id    = self::toLower($cabinet['id']);
-            $score = self::getScore($id, $words, 3) + self::getScore($name, $words, 1);
+            $cabinet    = (array)$cabinet;
+            $name       = self::toLower($cabinet['name']);
+            $cabinet_id = self::toLower($cabinet['id']);
+            $score      = self::getScore($cabinet_id, $words, 3) + self::getScore($name, $words, 1);
             if (!$score) {
                 continue;
             }
@@ -73,8 +73,38 @@ class Search {
             }
             return ($a < $b) ? 1 : -1;
         });
-
         $result['cabinet'] = $cabinets_scores;
+
+        $events       = Event::getAll();
+        $event_scores = [];
+        foreach ($events as $event) {
+            if (!array_key_exists('name', $event)) {
+                continue;
+            }
+
+            $name       = self::toLower($event['name']);
+            $cabinet_id = self::toLower($event['cabinet_id']);
+            $score      = self::getScore($cabinet_id, $words, 1) + self::getScore($name, $words, 3);
+            if (!$score) {
+                continue;
+            }
+
+            $event_scores[] = [
+                'score' => $score,
+                'event' => $event,
+            ];
+        }
+
+        usort($event_scores, function($event1, $event2) {
+            $a = $event1['score'];
+            $b = $event2['score'];
+            if ($a == $b) {
+                return 0;
+            }
+            return ($a < $b) ? 1 : -1;
+        });
+
+        $result['events'] = $event_scores;
 
         return $result;
     }
@@ -83,6 +113,9 @@ class Search {
         $search_result = self::searchEngine($query);
 
         $result = [];
+        $result['users'] = [];
+        $result['cabinet'] = [];
+        $result['events'] = [];
         foreach ($search_result['users'] as $user_scored) {
             $result['users'][] = $user_scored['user'];
         }
@@ -91,15 +124,19 @@ class Search {
             $result['cabinet'][] = $cabinets_score['cabinet'];
         }
 
+        foreach ($search_result['events'] as $event_score) {
+            $result['events'][] = $event_score['event'];
+        }
+
         return $result;
     }
 
     public static function searchRoute($from, $to) {
         $from_result = self::searchEngine($from);
-        $to_result = self::searchEngine($to);
+        $to_result   = self::searchEngine($to);
 
         $from_cabinets = self::mergeSearchResult($from_result);
-        $to_cabinets = self::mergeSearchResult($to_result);
+        $to_cabinets   = self::mergeSearchResult($to_result);
 
         foreach ($from_cabinets as $from_cabinet) {
             foreach ($to_cabinets as $to_cabinet) {
@@ -115,14 +152,20 @@ class Search {
     public static function mergeSearchResult($search_result) {
         $result = [];
         foreach ($search_result['users'] as $user_result) {
-            $cabinet_id = $user_result['user']['cabinet'];
-            $score = $user_result['score'];
+            $cabinet_id          = $user_result['user']['cabinet'];
+            $score               = $user_result['score'];
             $result[$cabinet_id] = (array_key_exists($cabinet_id, $result) ? $result[$cabinet_id] : 0) + $score;
         }
 
         foreach ($search_result['cabinet'] as $cabinet_result) {
-            $cabinet_id = $cabinet_result['cabinet']['id'];
-            $score = $cabinet_result['score'];
+            $cabinet_id          = $cabinet_result['cabinet']['id'];
+            $score               = $cabinet_result['score'];
+            $result[$cabinet_id] = (array_key_exists($cabinet_id, $result) ? $result[$cabinet_id] : 0) + $score;
+        }
+
+        foreach ($search_result['events'] as $event_result) {
+            $cabinet_id          = $event_result['event']['cabinet_id'];
+            $score               = $event_result['score'];
             $result[$cabinet_id] = (array_key_exists($cabinet_id, $result) ? $result[$cabinet_id] : 0) + $score;
         }
 

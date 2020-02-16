@@ -19,6 +19,7 @@ class InitController extends Controller
 {
     use MakesHttpRequests;
     static $nameToId = [];
+    static $nameToPhoto = [];
     static $cabinetToWorkers = [];
     static $tableIdToPoints = [];
     static $cabinetIdToType = [];
@@ -32,6 +33,17 @@ class InitController extends Controller
         "https://okna-okt.ru/wp-content/themes/okna/img/women.png",
         "https://pngimage.net/wp-content/uploads/2018/06/%D0%B4%D0%B5%D0%B2%D1%83%D1%88%D0%BA%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-png-8.png",
     ];
+    static $random_photo_man = [
+        "https://pngimg.com/uploads/face/face_PNG5669.png",
+        "https://pngimg.com/uploads/face/face_PNG5660.png",
+        "https://pngimg.com/uploads/face/face_PNG5664.png",
+        "https://pngimg.com/uploads/face/face_PNG5669.png",
+    ];
+    static $random_photo_woman = [
+        "https://carbis.ru/img/adv-girl.png",
+        "https://okna-okt.ru/wp-content/themes/okna/img/women.png",
+        "https://pngimage.net/wp-content/uploads/2018/06/%D0%B4%D0%B5%D0%B2%D1%83%D1%88%D0%BA%D0%B0-%D0%BE%D1%84%D0%B8%D1%81-png-8.png",
+    ];
 
     public function parseUserFile(String $file_name, int $level) {
         $content = file_get_contents($file_name);
@@ -41,12 +53,22 @@ class InitController extends Controller
             if (sizeof($test) == 3) {
                 list($cabinet_id, $surname, $name) = $test;
                 $floor = substr($cabinet_id, 0, 1);
-                User::create($name, $surname, $floor, $cabinet_id, $level, self::$random_photo[mt_rand(0, sizeof(self::$random_photo) - 1)]);
+                self::$nameToPhoto[$name." ".$surname] = self::getPhoto($name);
+                User::create($name, $surname, $floor, $cabinet_id, $level, self::$nameToPhoto[$name." ".$surname]);
                 self::$nameToId[$name." ".$surname] = self::$current_id++;
                 self::$cabinetToWorkers[$cabinet_id][$level][] = $name." ".$surname;
             } elseif(sizeof($test) == 1) {
                 self::$cabinetToWorkers[$test[0]][$level] = [];
             }
+        }
+    }
+
+    private function getPhoto($name) {
+        $last_letter = mb_substr($name, -1,1);
+        if (strpos('аяуюоеиы', $last_letter) !== false) {
+            return self::$random_photo_woman[mt_rand(0, sizeof(self::$random_photo_woman) - 1)];
+        } else {
+            return self::$random_photo_man[mt_rand(0, sizeof(self::$random_photo_man) - 1)];
         }
     }
 
@@ -137,7 +159,7 @@ class InitController extends Controller
                         "point_x" => $table["point_x"],
                         "point_y" => $table["point_y"],
                         "id" => $table_id,
-                        "photo_url" => self::$random_photo[mt_rand(0, sizeof(self::$random_photo) - 1)],
+                        "photo_url" => self::$nameToPhoto[$name." ".$surname],
                     ];
                 }
                 Cabinet::add($cabinet_id, $floor, $level, $level_count, "worker_room", $tables_data);
