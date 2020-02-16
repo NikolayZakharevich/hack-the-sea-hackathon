@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Redis;
 
 class Cabinet {
 
-    private static function getKey($user_id) {
-        return 'cabinet' . $user_id;
+    private static function getKey($cabinet_id, $level) {
+        return 'cabinet' . $cabinet_id . ":" . $level;
     }
 
     private static function getSetKey() {
@@ -25,15 +25,35 @@ class Cabinet {
         ];
         $cabinet_serialized = json_encode($cabinet, JSON_UNESCAPED_UNICODE);
 
-        $result = (bool)Redis::set(self::getKey($id), $cabinet_serialized);
+        $result = (bool)Redis::set(self::getKey($id, $level), $cabinet_serialized);
         if ($result) {
             Redis::sadd(self::getSetKey(), $id);
         }
         return $result;
     }
 
-    public static function get($id) {
-        $cabinet_serialized = Redis::get(self::getKey($id));
+
+    public static function fixCabs() {
+        $cabinets = self::getAll();
+        $floors = Floor::getAll([]);
+        $names = [];
+        foreach ($floors as $floor) {
+            foreach ($floor['cabinets'] as $key => $cabinet) {
+                $names[$cabinet['id']] = $cabinet['name'];
+            }
+        }
+
+        foreach ($cabinets as $key => $cabinet) {
+            if (!array_key_exists($cabinet['id'], $names)) {
+                continue;
+            }
+            $cabinet['name'] = $names[$cabinet['id']];
+            Redis::set(self::getKey($cabinet['id'], $cabinet['level']), json_encode($cabinet, JSON_UNESCAPED_UNICODE));
+        }
+    }
+
+    public static function get($id, $level) {
+        $cabinet_serialized = Redis::get(self::getKey($id, $level));
         if (!$cabinet_serialized) {
             return null;
         }
@@ -48,7 +68,7 @@ class Cabinet {
         $all_cabinets_ids = (array)Redis::smembers(self::getSetKey());
         $cabinets        = [];
         foreach ($all_cabinets_ids as $cabinet_id) {
-            $cabinets[] = self::get($cabinet_id);
+            $cabinets[] = self::get($cabinet_id, 1);
         }
 
         return $cabinets;

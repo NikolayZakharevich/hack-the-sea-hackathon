@@ -4,16 +4,16 @@
 304;Production Technology Support;337;567
 305;Sim Product;337;437
 306;Sim Product;337;303
-307;;444;228
-308;;511;228
-311;Переговорка;537;404
-312;Переговорка;491;404
-313;Переговорка;534;525
-314;Переговорка;488;525
-317;;513;636
-318;;513;776
-boy_toilet_top_3;Мужской туалет;515;355
-girl_toilet_top_3;Женский туалет;515;325
-cofepoint_3;Кофепоинт;505;1015
-boy_toilet_bottom_3;Мужской туалет;505;1100
-girl_toilet_bottom_3;Женский туалет;505;1070
+307;Wardrobe;444;228
+308;Wardrobe;511;228
+311;Conference room;537;404
+312;Conference room;491;404
+313;Conference room;534;525
+314;Conference room;488;525
+317;Relax room;513;636
+318;Sport center;513;776
+boy_toilet_top_3;Men's toilet;515;355
+girl_toilet_top_3;Women's toilet;515;325
+cofepoint_3;Coffepoint;505;1015
+boy_toilet_bottom_3;Men's toilet;505;1100
+girl_toilet_bottom_3;Women's toilet;505;1070

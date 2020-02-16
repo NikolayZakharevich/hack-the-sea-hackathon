@@ -1,5 +1,4 @@
 import 'whatwg-fetch'
-import Cookies from 'js-cookie'
 import queryString from 'query-string'
 import config from '../config'
 

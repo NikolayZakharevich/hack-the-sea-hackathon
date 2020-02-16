@@ -1,14 +1,23 @@
 import React from 'react';
 import "./FloorLayout.scss"
+import {LAYOUT_CABINET} from "../../App";
+import {getCabinet} from "../../api/cabinet";
 
-const FloorLayout = ({cabinets}) => {
+const FloorLayout = ({cabinets, setActiveLayout, setActiveFloor, setActiveCabinet}) => {
 
+    console.log(cabinets);
     const onClickCabinet = id => {
-
-    }
+        getCabinet(id).then(r => {
+                if (r && r.cabinet) {
+                    setActiveCabinet({id, tables: r.cabinet.tables});
+                    setActiveLayout(LAYOUT_CABINET)
+                }
+            }
+        )
+    };
 
     return (
-        <svg viewBox="0 0 842 1191">
+        <svg viewBox="210 180 450 950">
             <style>
                 {
                     ".prefix__st1,.prefix__st2{fill:none;stroke-miterlimit:10}.prefix__st1{stroke:#000;stroke-width:.12;stroke-linecap:round;stroke-linejoin:round}.prefix__st2{stroke:#939393;stroke-width:.5}.prefix__st3{fill:#939393}.prefix__st4{fill:none;stroke:#939393;stroke-width:.75;stroke-miterlimit:10}.prefix__st5{font-family:&apos;Roboto-Black&apos;}.prefix__st6{font-size:13.0625px}.prefix__st11,.prefix__st7{fill:none;stroke:#000;stroke-width:1.5;stroke-miterlimit:10}.prefix__st11{fill:#939393;stroke:#939393;stroke-width:.5}"
@@ -191,42 +200,6 @@ const FloorLayout = ({cabinets}) => {
                     d="M368.6 1093.1v-27H337v27h31.6zm-7.3-.6h-2.9v-26h2.9v26zm.5-25.9h2.9v26h-2.9v-26zm-4 25.9h-2.9v-26h2.9v26zm-3.4 0h-2.9v-26h2.9v26zm-3.5 0H348v-26h2.9v26zm-3.4 0h-2.9v-26h2.9v26zm-3.5 0h-2.9v-26h2.9v26zm24 0h-2.7v-26h2.7v26zm-30.5-25.9h3.1v26h-3.1v-26z"
                 />
                 <path className="prefix__st4" d="M407.4 262h25v14.9h-25z"/>
-                {/*<text*/}
-                    {/*transform="translate(337.72 303.95)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"108"}*/}
-                {/*</text>*/}
-                {/*<text*/}
-                    {/*transform="translate(337.72 437.07)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"107"}*/}
-                {/*</text>*/}
-                {/*<text*/}
-                    {/*transform="translate(337.721 567.178)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"106"}*/}
-                {/*</text>*/}
-                {/*<text*/}
-                    {/*transform="translate(337.72 706.49)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"105"}*/}
-                {/*</text>*/}
-                {/*<path*/}
-                    {/*className="prefix__st3"*/}
-                    {/*d="M400.7 774h16.9v-41h-12.2v29.3h-4.7V774zm.5-11.2h1.7v10.7h-1.7v-10.7zm4.2 0v10.7h-1.9v-10.7h1.9zm11.7-22.5v2.7H406v-2.7h11.1zm-11.1-.6V737h11.1v2.7H406zm11.1 3.8v2.7H406v-2.7h11.1zm0 3.2v2.7H406v-2.7h11.1zm0 3.2v2.7H406v-2.7h11.1zm0 3.2v2.7H406v-2.7h11.1zm0 3.2v2.7H406v-2.7h11.1zM406 733.5h11.1v3H406v-3zm11.1 28.8H406v-2.7h11.1v2.7zm0 11.2H406v-10.7h11.1v10.7z"*/}
-                {/*/>*/}
-                {/*<path*/}
-                    {/*d="M349.1 870.4c.4.2.8.4 1.1.7l-2.1 3.6c-.4-.2-.8-.4-1.1-.7l2.1-3.6zM347.6 871.1l-2.1 3.6c-.4-.2-.8-.4-1.1-.7l2.1-3.6c.4.3.8.5 1.1.7zM350.8 874.7c-.4-.2-.8-.4-1.1-.7l2.1-3.6c.4.2.8.4 1.1.7l-2.1 3.6zM355.4 877.1H341h-.1V881c.3 2 1.2 3.7 2.8 4.9l.1.1h-1.4c-.4 0-.8.1-1.2 0v1.3h13.6V886h-2.6v-.1c1.2-.9 2-2 2.5-3.4.1-.3.1-.3.5-.4 1.3 0 2.3-.9 2.5-2.1.5-1.4-.7-2.9-2.3-2.9zm-1.4 2.1c0 .6 0 1.3-.1 1.9-.2 1.7-1.1 3.1-2.5 4-1.7 1.2-3.6 1.4-5.5.6-2.2-.9-3.5-2.7-3.7-5.1-.1-.7 0-1.4 0-2.1v-.1H353.9c.1.3.1.5.1.8zm2.4 1.2c-.2.4-.6.6-1.1.6v-2.5c.5 0 .8.2 1.1.6.3.4.3.8 0 1.3z"/>*/}
-                {/*<text*/}
-                    {/*transform="translate(337.931 813.124)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"104"}*/}
-                {/*</text>*/}
                 <circle className="prefix__st7" cx={517.5} cy={1084.3} r={2.2}/>
                 <path d="M518.2 1057.2h-1.5l-4 7.7h9.6l-4.1-7.7zm-.7 1.4l2.7 5.2h-5.4l2.7-5.2z"/>
                 <circle className="prefix__st7" cx={517.5} cy={1055.2} r={2.2}/>
@@ -240,37 +213,6 @@ const FloorLayout = ({cabinets}) => {
                     d="M490.8 698.8h-16.9v37.7H486v-26.9h4.7v-10.8zm-.6 10.3h-1.7v-9.8h1.7v9.8zm-4.2 0v-9.8h1.9v9.8H486zm-11.6 20.7v-2.5h11.1v2.5h-11.1zm11.1.5v2.5h-11.1v-2.5h11.1zm-11.1-3.5v-2.4h11.1v2.4h-11.1zm0-2.9v-2.5h11.1v2.5h-11.1zm0-2.9v-2.5h11.1v2.5h-11.1zm0-3v-2.5h11.1v2.5h-11.1zm0-2.9v-2.5h11.1v2.5h-11.1zm11.1 20.9h-11.1v-2.8h11.1v2.8zm-11.1-26.4h11.1v2.5h-11.1v-2.5zm0-10.3h11.1v9.8h-11.1v-9.8zM491.1 845.9V835h-4.7v-27.8h-12.2v39h16.9v-.3zm-.5-.3h-1.7v-10.2h1.7v10.2zm-2.3-10.1v10.2h-1.9v-10.2h1.9zm-2.4-21.4v2.5h-11.1v-2.5h11.1zm-11.1-.5V811h11.1v2.5h-11.1zm11.1 3.5v2.5h-11.1v-2.5h11.1zm0 3.1v2.5h-11.1v-2.5h11.1zm0 3v2.5h-11.1v-2.5h11.1zm0 3.1v2.5h-11.1v-2.5h11.1zm0 3v2.6h-11.1v-2.6h11.1zm0-18.8h-11.1v-2.9h11.1v2.9zm-11.1 21.9h11.1v2.5h-11.1v-2.5zm0 3.1h11.1v10.2h-11.1v-10.2z"
                 />
                 <path className="prefix__st2" d="M498.2 845.6h62.9V698.8h-62.9v146.8"/>
-                {/*<text*/}
-                    {/*transform="translate(501.632 618.134)"*/}
-                    {/*className="prefix__st5"*/}
-                    {/*fontSize={11}*/}
-                {/*>*/}
-                    {/*{"\u0441\u043A\u043B\u0430\u0434"}*/}
-                {/*</text>*/}
-                {/*<text*/}
-                    {/*transform="translate(514.408 776.87)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"120"}*/}
-                {/*</text>*/}
-                {/*<text*/}
-                    {/*transform="translate(504.465 536.233)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"118"}*/}
-                {/*</text>*/}
-                {/*<text*/}
-                    {/*transform="translate(504.464 470.57)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"117"}*/}
-                {/*</text>*/}
-                {/*<text*/}
-                    {/*transform="translate(504.464 405.984)"*/}
-                    {/*className="prefix__st5 prefix__st6"*/}
-                {/*>*/}
-                    {/*{"116"}*/}
-                {/*</text>*/}
             </g>
             <g id="prefix__Layer_2">
                 <path
@@ -618,20 +560,22 @@ const FloorLayout = ({cabinets}) => {
                     className="prefix__st3"
                     d="M443 496.7h55.8v1.8H443z"
                 />
-            </g>
-            {
+                {!!cabinets &&
                 cabinets.map(cabinet => {
-                    return <text
+                   return <text
                         transform={"translate(" + (cabinet.point_x - 10) + " " + (cabinet.point_y - 10) + ")"}
                         className={cabinet.id}
+                        onClick={() => onClickCabinet(cabinet.id)}
+                        key={cabinet.id}
+                        cursor={"pointer"}
                     >
                         {cabinet.name}
                     </text>
-                })
-            }
+                })}
+            </g>
         </svg>
-    );
-}
+    )
+};
 
 
 export default FloorLayout;

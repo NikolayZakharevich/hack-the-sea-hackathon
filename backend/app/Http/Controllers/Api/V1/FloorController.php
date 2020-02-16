@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Redis;
 class FloorController extends Controller {
 
     public function index(ApiRequest $request) {
-        $floors = Floor::getAll();
+        $filters = $this->getFilters($request);
+        $floors = Floor::getAll($filters);
 
         return response()->json([
             'response' => 'ok',
@@ -23,11 +24,21 @@ class FloorController extends Controller {
     }
 
     public function show(ApiRequest $request, int $id) {
-        $floor = Floor::get($id);
+        $filters = $this->getFilters($request);
+        $floor = Floor::get($id, $filters);
 
         return response()->json([
             'response' => 'ok',
             'floor'    => $floor,
         ]);
+    }
+
+    private function getFilters(ApiRequest $request) {
+        $filters = (string)$request->get('filters');
+        if ($filters) {
+            return array_filter(explode(',', $filters));
+        } else {
+            return [];
+        }
     }
 }
