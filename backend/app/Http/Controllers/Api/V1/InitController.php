@@ -32,6 +32,8 @@ class InitController extends Controller
                 User::create($name, $surname, $floor, $cabinet_id, $level, "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg");
                 self::$nameToId[$name." ".$surname] = self::$current_id++;
                 self::$cabinetToWorkers[$cabinet_id][$level][] =  $name." ".$surname;
+            } elseif(sizeof($test) == 1) {
+                self::$cabinetToWorkers[$test[0]][$level] = [];
             }
         }
     }
@@ -100,8 +102,8 @@ class InitController extends Controller
     public function parseCabinets() {
         self::parseCabinetFile(__DIR__ . "/../../../../src/cabinets/106_cabinet");
         self::parseOtherCabinets();
-        foreach (self::$cabinetToWorkers as $key_cabs => $cabinets) {
-            $floor = substr($key_cabs, 0, 1);
+        foreach (self::$cabinetToWorkers as $cabinet_id => $cabinets) {
+            $floor = substr($cabinet_id, 0, 1);
             $level_count = sizeof($cabinets);
             foreach ($cabinets as $level => $cabinet) {
                 shuffle($cabinet);
@@ -127,7 +129,7 @@ class InitController extends Controller
                         "photo_url" => "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
                     ];
                 }
-                Cabinet::add($key_cabs, $floor, $level, $level_count, "worker_room", $tables_data);
+                Cabinet::add($cabinet_id, $fqgit qloor, $level, $level_count, "worker_room", $tables_data);
             }
         }
     }
