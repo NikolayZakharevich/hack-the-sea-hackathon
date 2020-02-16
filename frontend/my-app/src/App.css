@@ -27,6 +27,7 @@
 .filterShown {
     width: 15rem;
     background: white;
+    z-index: 998;
 }
 
 .bordered {
@@ -43,14 +44,6 @@
 
 .iconSelected {
     background-color: #01FF35;
-}
-
-.officeMap {
-    width: 80%;
-    /*height: 50rem;*/
-    margin: auto;
-    border: black 1px solid;
-    border-radius: 1rem;
 }
 
 .container {
@@ -148,6 +141,7 @@
 
 .rbShown {
     background: white;
+    z-index: 999;
 }
 
 .inputField {
@@ -167,6 +161,69 @@
 
 .mgLabel {
     margin: 0.2rem 0.5rem 0 0.5rem;
+}
+
+.officeMap {
+    width: 80%;
+    margin: auto auto 2rem;
+    border: black 1px solid;
+    border-radius: 1rem;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*flex-direction: row;*/
+}
+
+.omTopPanel {
+    width: 90%;
+    margin: auto;
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.floorSwitcher {
+    /*width: 90%;*/
+    /*margin: auto;*/
+    height: 5rem;
+    /*position: relative;*/
+    /*top: 2rem;*/
+    /*left: 2rem;*/
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.switcherBtn {
+    width: 2rem;
+    height: 2rem;
+    margin: auto;
+    border: black 1px solid;
+    border-radius: 0.5rem;
+    text-align: center;
+    line-height: 2rem;
+}
+
+.switcherBtn:hover {
+    cursor: pointer;
+}
+
+.backButton:hover {
+    cursor: pointer;
+}
+
+.backButton {
+    width: 4rem;
+    height: 2rem;
+    border: black 1px solid;
+    border-radius: 0.5rem;
+    text-align: center;
+    line-height: 2rem;
+}
+
+.buttonDisabled {
+    opacity: 30%;
 }
 
 /*@keyframes App-logo-spin {*/

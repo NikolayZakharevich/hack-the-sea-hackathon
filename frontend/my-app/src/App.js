@@ -11,7 +11,7 @@ import CabinetLayout from "./components/CabinetLayout/CabinetLayout";
 export const LAYOUT_FLOOR = 'LAYOUT_FLOOR';
 export const LAYOUT_CABINET = 'LAYOUT_CABINET';
 
-const START_FLOOR_ID = 1
+const START_FLOOR_ID = 1;
 
 class App extends Component {
 
@@ -19,6 +19,8 @@ class App extends Component {
         super(props);
 
         this.state = {
+            stateVersions: [],
+
             filtersBlockShown: false,
             roadBlockShown: false,
             magniferBlockShow: false,
@@ -30,13 +32,20 @@ class App extends Component {
                 warehouse: false
             },
 
+            isFirstFloor: true,
+            isLastFloor: false,
+
             activeLayout: LAYOUT_FLOOR,
             activeFloor: {
+                id: START_FLOOR_ID,
                 cabinets: []
             },
             activeCabinet: {
                 tables: []
-            }
+            },
+            lastTimeSearch: 0,
+            searchFieldValue: "",
+            searchResult: null
         };
 
         this.onClickLeftBlock = this.onClickLeftBlock.bind(this);
@@ -48,15 +57,18 @@ class App extends Component {
         this.setupMeetingRoomFilter = this.setupMeetingRoomFilter.bind(this);
         this.setupWarehouseFilter = this.setupWarehouseFilter.bind(this);
         this.prepareFilters = this.prepareFilters.bind(this);
+        this.loadFloor = this.loadFloor.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.searchQuery = this.searchQuery.bind(this);
     }
 
-    componentDidMount() {
-        getFloor(START_FLOOR_ID).then(r => {
+    loadFloor = (id) => {
+        getFloor(id).then(r => {
                 const isValidResponse = !!r && !!r.floor;
                 if (isValidResponse) {
                     const floor = r.floor;
                     if (!!floor.cabinets) {
-                        this.setActiveFloor({id: START_FLOOR_ID, cabinets: floor.cabinets});
+                        this.setActiveFloor({id: id, cabinets: floor.cabinets});
                     } else {
                         console.log('Failed to load cabinets')
                     }
@@ -65,6 +77,10 @@ class App extends Component {
                 }
             }
         );
+    };
+
+    componentDidMount() {
+        this.loadFloor(START_FLOOR_ID);
     }
 
     onClickLeftBlock() {
@@ -97,26 +113,30 @@ class App extends Component {
         }
     }
 
+    setStateWithHistory = state => {
+        const stateVersions = this.state.stateVersions.slice()
+        stateVersions.push(this.state);
+        this.setState({...state, stateVersions})
+    };
+
     setActiveLayout = activeLayout => {
-        this.setState({...this.state, activeLayout})
+        this.setStateWithHistory({...this.state, activeLayout})
     };
 
     setActiveFloor = ({id, cabinets}) => {
         const newState = this.state;
-        console.log(cabinets)
-        newState.activeFloor = {id, cabinets}
+        newState.activeFloor = {id, cabinets};
         this.setState(newState)
     };
 
     setActiveCabinet = ({id, tables}) => {
         const newState = this.state;
-        newState.activeCabinet = {id, tables}
+        newState.activeCabinet = {id, tables};
         this.setState(newState)
     };
 
     filterResult = (filters) => {
         const id = this.state.activeFloor.id;
-        console.log(id);
         filterResults(id, filters).then(r => {
             this.setActiveFloor({id, cabinets: r.floor.cabinets})
         })
@@ -126,6 +146,16 @@ class App extends Component {
         const filters = this.state.currentFilter;
         this.filterResult(Object.keys(filters).filter(e => filters[e]).join("\,"));
     }
+
+    onClickBackButton = () => {
+        const versions = this.state.stateVersions.slice();
+        if (versions.length === 0) {
+            return;
+        }
+        const prevVersion = versions[versions.length - 1];
+        versions.pop();
+        this.setState(prevVersion)
+    };
 
     setupCoffeePointFilter = () => {
         const currentFilter = this.state.currentFilter;
@@ -162,12 +192,60 @@ class App extends Component {
         this.prepareFilters()
     };
 
-    searchQuery = str => {
-        search(str).then(
+    searchQuery() {
+        const value = this.state.searchFieldValue;
+        console.log(value);
+        search(value).then(
             r => {
-                this.setState({activeCabinets: r.result})
+                console.log(r)
+                this.setState({searchResult: r.result})
             }
         )
+    };
+
+    handleChange({ target }) {
+        if (target.value === "") {
+            return
+        }
+
+        const lastTime = this.state.lastTimeSearch;
+        const curTime = new Date().toLocaleString();
+
+        this.setState({searchFieldValue: target.value});
+
+        if (curTime - lastTime >= 300) {
+            this.searchQuery();
+        } else {
+            this.setState({lastTimeSearch: curTime})
+        }
+    };
+
+    toUpTapped = () => {
+        const curId = this.state.activeFloor.id;
+
+        if (curId >= 3) {
+            return;
+        }
+
+        if (curId + 2 >= 3) {
+            this.setState({isFirstFloor: false, isLastFloor: true});
+        }
+
+        this.loadFloor(curId + 2);
+    };
+
+    toDownTapped = () => {
+        const curId = this.state.activeFloor.id;
+
+        if (curId <= 1) {
+            return;
+        }
+
+        if (curId - 2 <= 1) {
+            this.setState({isFirstFloor: true, isLastFloor: false});
+        }
+
+        this.loadFloor(curId - 2);
     };
 
     renderLayout = () => {
@@ -175,6 +253,7 @@ class App extends Component {
         switch (activeLayout) {
             case LAYOUT_FLOOR:
                 return <FloorLayout
+                    id={activeFloor.id}
                     cabinets={activeFloor.cabinets}
                     setActiveLayout={this.setActiveLayout}
                     setActiveFloor={this.setActiveFloor}
@@ -182,6 +261,7 @@ class App extends Component {
                 />;
             case LAYOUT_CABINET:
                 return <CabinetLayout
+                    id={activeCabinet.id}
                     tables={activeCabinet.tables}
                     setActiveLayout={this.setActiveLayout}
                     setActiveFloor={this.setActiveFloor}
@@ -195,8 +275,13 @@ class App extends Component {
         const showFiltersBlock = this.state.filtersBlockShown;
         const showRoadBlock = this.state.roadBlockShown;
         const showMagniferBlock = this.state.magniferBlockShow;
+        const curFloor = this.state.activeFloor.id;
+        const {stateVersions} = this.state;
 
-        let searchQuery = "";
+        const hasNoHistory = stateVersions.length === 0;
+        const isFirstFloor = this.state.isFirstFloor;
+        const isLastFloor = this.state.isLastFloor;
+        const searchResult = this.state.searchResult;
 
         return (
             <div className="App">
@@ -276,9 +361,14 @@ class App extends Component {
                                 <span>Example: Cabinet 147, Ivanov Petr, Banquet</span>
                             </div>
                             <div className="inputField">
-                                <input placeholder="What are you looking for?" size="38" value={searchQuery}/>
+                                <input placeholder="What are you looking for?" size="38" onChange={this.handleChange}/>
                             </div>
-                            <div className="sendBtn" onClick={search(searchQuery)}>
+                            {searchResult !== null &&
+                                <div className="searchResult">
+                                    
+                                </div>
+                            }
+                            <div className="sendBtn">
                                 Find
                             </div>
                         </div>
@@ -286,9 +376,27 @@ class App extends Component {
                     </div>
                 </div>
                 <div className="officeMap">
+                    <div className="omTopPanel">
+                        <div className="floorSwitcher">
+                            <div className={"toUp switcherBtn  " + (isLastFloor? "buttonDisabled" : "")} onClick={this.toUpTapped}>
+                                ▲
+                            </div>
+                            <div className={"toDown switcherBtn  " + (isFirstFloor? "buttonDisabled" : "")} onClick={this.toDownTapped}>
+                                ▼
+                            </div>
+                        </div>
+                        <div className="floorTitle">
+                            <span>Floor {curFloor}</span>
+                        </div>
+                        <div className={"backButton " + (hasNoHistory? "buttonDisabled" : "")} onClick={this.onClickBackButton}>
+                            Back
+                        </div>
+                    </div>
+                    <div className="svg">
                     {
                         this.renderLayout()
                     }
+                    </div>
                 </div>
             </div>
         )
