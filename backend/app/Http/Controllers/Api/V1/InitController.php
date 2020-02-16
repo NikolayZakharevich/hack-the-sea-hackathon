@@ -11,6 +11,7 @@ use App\Models\Floor;
 use App\Models\User;
 use Doctrine\DBAL\Schema\Table;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
+use Illuminate\Support\Facades\Redis;
 
 class InitController extends Controller
 {
@@ -132,11 +133,41 @@ class InitController extends Controller
         }
     }
 
+
+
+    public function parseEvents() {
+        $content = file_get_contents(__DIR__ . "/../../../../src/events/events");
+        $cabinets = explode("\n", $content);
+
+        foreach ($cabinets as $cabinet) {
+            $test = explode(";", $cabinet);
+            if (sizeof($test) == 5) {
+                list($user_string, $cabinet_id, $time_from, $time_to, $name) = $test;
+
+                $user_list = explode("_", $user_string);
+                $users_data = [];
+                for ($i = 0; $i < sizeof($user_list); $i+=3) {
+                    $users_data[] = [
+                        "name" => $user_list[$i],
+                        "surname" => $user_list[$i + 1],
+                        "id" => $user_list[$i + 2],
+                    ];
+                }
+                info($users_data);
+                info($cabinet_id);
+                info($time_from);
+                info($time_to);
+                info($name);
+            }
+        }
+    }
     public function index(ApiRequest $request)
     {
+        Redis::flushAll();
         self::parseUser();
         self::parseFloors();
         self::parseCabinets();
+        self::parseEvents();
         return response()->json([
             'response' => 'ok'
         ]);
