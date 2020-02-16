@@ -103,13 +103,13 @@ class App extends Component {
 
     setActiveFloor = ({id, cabinets}) => {
         const newState = this.state;
-        newState.activeFloor = {cabinets}
+        newState.activeFloor = {id, cabinets}
         this.setState(newState)
     };
 
-    setActiveCabinet = ({tables}) => {
+    setActiveCabinet = ({id, tables}) => {
         const newState = this.state;
-        newState.activeCabinet = {tables}
+        newState.activeCabinet = {id, tables}
         this.setState(newState)
     };
 
