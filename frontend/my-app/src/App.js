@@ -3,14 +3,18 @@ import './App.css';
 import filterIcon from './static/filterIcon.png'
 import routeIcon from './static/routeIcon.png'
 import magniferIcon from './static/magniferIcon.png'
-import {filterResults} from "./api/floor";
+import {filterResults, getFloor} from "./api/floor";
 import {search} from "./api/search";
-import {RouteNode} from "react-router5";
-import {PAGE_BUILDING, PAGE_CABINET, PAGE_FLOOR} from "./routes";
 import FloorLayout from "./components/FloorLayout/FloorLayout";
 import CabinetLayout from "./components/CabinetLayout/CabinetLayout";
 
+export const LAYOUT_FLOOR = 'LAYOUT_FLOOR';
+export const LAYOUT_CABINET = 'LAYOUT_CABINET';
+
+const START_FLOOR_ID = 1
+
 class App extends Component {
+
     constructor(props) {
         super(props);
 
@@ -18,12 +22,18 @@ class App extends Component {
             filtersBlockShown: false,
             roadBlockShown: false,
             magniferBlockShow: false,
-            cabinets: null,
-            activeCabinets: null,
             currentFilter: {
                 coffeePoint: false,
                 bathroom: false,
                 restRoom: false
+            },
+
+            activeLayout: LAYOUT_FLOOR,
+            activeFloor: {
+                cabinets: []
+            },
+            activeCabinet: {
+                tables: []
             }
         };
 
@@ -34,6 +44,23 @@ class App extends Component {
         this.setupBathroomFilter = this.setupBathroomFilter.bind(this);
         this.setupRestRoomFilter = this.setupRestRoomFilter.bind(this);
         this.prepareFilters = this.prepareFilters.bind(this);
+    }
+
+    componentDidMount() {
+        getFloor(START_FLOOR_ID).then(r => {
+                const isValidResponse = !!r && !!r.floor;
+                if (isValidResponse) {
+                    const floor = r.floor;
+                    if (!!floor.cabinets) {
+                        this.setActiveFloor({id: START_FLOOR_ID, cabinets: floor.cabinets});
+                    } else {
+                        console.log('Failed to load cabinets')
+                    }
+                } else {
+                    console.log('Failed to load floor')
+                }
+            }
+        );
     }
 
     onClickLeftBlock() {
@@ -66,40 +93,52 @@ class App extends Component {
         }
     }
 
+    setActiveLayout = activeLayout => {
+        this.setState({...this.state, activeLayout})
+    };
+
+    setActiveFloor = ({id, cabinets}) => {
+        const newState = this.state;
+        newState.activeFloor = {cabinets}
+        this.setState(newState)
+    };
+
+    setActiveCabinet = ({tables}) => {
+        const newState = this.state;
+        newState.activeCabinet = {tables}
+        this.setState(newState)
+    };
+
     filterResult = (filters) => {
-        const id = this.props.route.params.id;
+        const id = this.state.activeFloor.id;
         filterResults(id, filters).then(r => {
-            this.renderLayout()
+            this.setActiveFloor({id, cabinets: r.cabinets})
         })
     };
 
     prepareFilters() {
         const filters = this.state.currentFilter;
-
         this.filterResult(Object.keys(filters).filter(e => filters[e]).join("\,"));
     }
 
     setupCoffeePointFilter = () => {
         const currentFilter = this.state.currentFilter;
-        currentFilter.coffeePoint = true;
+        currentFilter.coffeePoint = !currentFilter.coffeePoint;
         this.setState({currentFilter})
-
         this.prepareFilters()
     };
 
     setupBathroomFilter = () => {
-        const currentFilters = this.state.currentFilter;
-        currentFilters.bathroom = true;
-        this.setState({currentFilter: currentFilters});
-
+        const currentFilter = this.state.currentFilter;
+        currentFilter.bathroom = !currentFilter.bathroom;
+        this.setState({currentFilter});
         this.prepareFilters()
     };
 
     setupRestRoomFilter = () => {
         const currentFilter = this.state.currentFilter;
-        currentFilter.restRoom = true;
+        currentFilter.restRoom = !currentFilter.restRoom;
         this.setState({currentFilter})
-
         this.prepareFilters()
     };
 
@@ -112,26 +151,25 @@ class App extends Component {
     };
 
     renderLayout = () => {
-        const route = this.props.route;
-        if (!route) {
-            return <div/>
+        const {activeLayout, activeFloor, activeCabinet} = this.state;
+        switch (activeLayout) {
+            case LAYOUT_FLOOR:
+                return <FloorLayout
+                    cabinets={activeFloor.cabinets}
+                    setActiveLayout={this.setActiveLayout}
+                    setActiveFloor={this.setActiveFloor}
+                    setActiveCabinet={this.setActiveCabinet}
+                />;
+            case LAYOUT_CABINET:
+                return <CabinetLayout
+                    tables={activeCabinet.tables}
+                    setActiveLayout={this.setActiveLayout}
+                    setActiveFloor={this.setActiveFloor}
+                    setActiveCabinet={this.setActiveCabinet}
+                />
         }
-        const topRouteName = route.name.split('.')[0]
-        const id = route.params.id;
-
-        if (topRouteName === PAGE_BUILDING) {
-            return <FloorLayout id={id}/>
-        }
-
-        if (topRouteName === PAGE_FLOOR) {
-            return <FloorLayout id={id}/>
-        }
-
-        if (topRouteName === PAGE_CABINET) {
-            return <CabinetLayout id={id}/>
-        }
-        return <div/>
     };
+
 
     render() {
         const showFiltersBlock = this.state.filtersBlockShown;
@@ -153,15 +191,15 @@ class App extends Component {
                         <div className="filtersBlock">
                             <label className="container">Coffee Point
                                 <input type="checkbox" onClick={this.setupCoffeePointFilter}/>
-                                <span className="checkmark"></span>
+                                <span className="checkmark"/>
                             </label>
                             <label className="container">Bathroom
                                 <input type="checkbox" onClick={this.setupBathroomFilter}/>
-                                <span className="checkmark"></span>
+                                <span className="checkmark"/>
                             </label>
                             <label className="container">Rest Room
                                 <input type="checkbox" onClick={this.setupRestRoomFilter}/>
-                                <span className="checkmark"></span>
+                                <span className="checkmark"/>
                             </label>
                         </div>
                         }
@@ -196,8 +234,8 @@ class App extends Component {
                                 <input placeholder="to:"/>
                             </div>
                             <div className="additionalParameters">
-                                <div className="additionalParam"></div>
-                                <div className="additionalParam"></div>
+                                <div className="additionalParam"/>
+                                <div className="additionalParam"/>
                             </div>
                             <div className="sendBtn">
                                 Go
@@ -229,8 +267,4 @@ class App extends Component {
     };
 }
 
-export default (props) => (
-    <RouteNode nodeName="">
-        {({route}) => <App route={route} {...props} />}
-    </RouteNode>
-)
+export default App

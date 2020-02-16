@@ -1,27 +1,16 @@
 import React from "react"
-import {getCabinet} from "../../api/cabinet";
 
-class CabinetLayout extends React.Component {
+const CabinetLayout = ({tables}) => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            tables: [],
-            type: null
-        };
+    const mapTables = (functor, tables) => {
+        tables.map(functor)
     }
 
-    componentDidMount() {
-        getCabinet(this.props.id).then(r => {
-            console.log(r)
-        })
-    }
-
-    render() {
-        return <svg viewBox="0 0 842 1191">
+    return (
+        <svg viewBox="0 0 842 1191">
             <style>
                 {
-                    ".prefix__st1{fill:none;stroke:#000;stroke-width:.12;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}.prefix__st3{fill:#939393}.prefix__st7{fill:#7a8487}.prefix__st9{fill:#fff}.prefix__st10{font-family:&apos;Roboto-Black&apos;}.prefix__st11{font-size:25px}.prefix__st12{fill:none;stroke:#7a8487;stroke-miterlimit:10}"
+                    ".prefix__st1{fill:none;stroke:#000;stroke-width:.12;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}.prefix__st3{fill:#939393}.prefix__st7{fill:#7a8487}.prefix__st9{fill:#fff}.prefix__st10{font-family:&apos;Roboto-Black&apos;}.prefix__st11{font-size:25px}.prefix__st12{fill:none;stroke:#7a8487;stroke-miterlimit:10}.prefix__st14{fill:#add8e6}"
                 }
             </style>
             <g id="prefix__Layer_2">
@@ -216,10 +205,30 @@ class CabinetLayout extends React.Component {
                     className="prefix__st3"
                     d="M633.1 903.6h74V723.8h-53.3V852h-20.7V903.6zm2.3-49.2h7.6v46.8h-7.6v-46.8zm18.4 0v46.8h-8.3v-46.8h8.3zm50.9-98.7v11.7h-48.5v-11.7h48.5zm-48.5-2.4v-11.7h48.5v11.7h-48.5zm48.5 16.5v11.6h-48.5v-11.6h48.5zm0 14v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5v-11.7h48.5zm0 14.1v11.7h-48.5V812h48.5zm0 14.1v11.8h-48.5v-11.8h48.5zm-48.5-100h48.5v13.2h-48.5v-13.2zM704.7 852h-48.5v-11.7h48.5V852zm0 49.2h-48.5v-46.8h48.5v46.8z"
                 />
+                {!!tables && tables.map(table => {
+                    return <circle className="prefix__st14" cx={table.point_x} cy={table.point_y} r={44}/>
+                })}
+                {!!tables && tables.map(table => {
+                    return <g id="prefix__Layer_3">
+                        <text
+                            transform={"translate(" + (table.point_x - 30) + " " + table.point_y + ")"}
+                            className="prefix__st13"
+                            key={table.id}
+                        >
+                            {table.name}
+                        </text>
+                        <text
+                            transform={"translate(" + (table.point_x - 30) + " " + (table.point_y - 15) + ")"}
+                            className="prefix__st13"
+                            key={table.id + "_"}
+                        >
+                            {table.surname}
+                        </text>
+                    </g>
+                })}
             </g>
         </svg>
-    }
-
-}
+    )
+};
 
 export default CabinetLayout
