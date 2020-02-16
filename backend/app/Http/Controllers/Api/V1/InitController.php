@@ -127,7 +127,6 @@ class InitController extends Controller
                         "id" => $table_id,
                         "photo_url" => "https://i.pinimg.com/originals/ae/5c/fc/ae5cfcbabb12b0461416a98846cd9111.jpg",
                     ];
-                    echo "$level $table_id\n";
                 }
                 Cabinet::add($cabinet_id, $floor, $level, $level_count, "worker_room", $tables_data);
             }
