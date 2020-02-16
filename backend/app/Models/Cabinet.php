@@ -32,6 +32,26 @@ class Cabinet {
         return $result;
     }
 
+
+    public static function fixCabs() {
+        $cabinets = self::getAll();
+        $floors = Floor::getAll([]);
+        $names = [];
+        foreach ($floors as $floor) {
+            foreach ($floor['cabinets'] as $key => $cabinet) {
+                $names[$cabinet['id']] = $cabinet['name'];
+            }
+        }
+
+        foreach ($cabinets as $key => $cabinet) {
+            if (!array_key_exists($cabinet['id'], $names)) {
+                continue;
+            }
+            $cabinet['name'] = $names[$cabinet['id']];
+            Redis::set(self::getKey($cabinet['id']), json_encode($cabinet, JSON_UNESCAPED_UNICODE));
+        }
+    }
+
     public static function get($id) {
         $cabinet_serialized = Redis::get(self::getKey($id));
         if (!$cabinet_serialized) {

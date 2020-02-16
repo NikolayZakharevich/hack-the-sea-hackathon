@@ -139,6 +139,7 @@ class InitController extends Controller
         self::parseUser();
         self::parseFloors();
         self::parseCabinets();
+        Cabinet::fixCabs();
         return response()->json([
             'response' => 'ok'
         ]);
