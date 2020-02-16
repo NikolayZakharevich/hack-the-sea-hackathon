@@ -1,0 +1,32 @@
+.ShowRoadBlock {
+
+  background-color: #EDEEF0;
+  position: relative;
+  min-height: 100vh;
+
+  &__inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__roadBlock {
+
+  }
+
+  &__inputField {
+    margin: 0.8rem 1rem 0 0.5rem;
+    height: 1.5rem;
+  }
+
+  &__sendBtn {
+    width: 40%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    margin: 0.5rem auto;
+    text-align: center;
+    background-color: #2196F3;
+    border-radius: 0.5rem;
+  }
+}
