@@ -11,8 +11,8 @@ boy_toilet_bottom;1;bathroom
 312;3;Meeting room
 313;3;Meeting room
 314;3;Meeting room
-boy_toilet_top;3;bathroom
-girl_toilet_top;3;bathroom
+boy_toilet_top_3;3;bathroom
+girl_toilet_top_3;3;bathroom
 cofepoint_3;3;cofepoint
 boy_toilet_bottom;3;bathroom
 girl_toilet_bottom;3;bathroom

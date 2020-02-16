@@ -7,7 +7,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiRequest;
 use App\Models\Cabinet;
+use App\Models\Event;
 use App\Models\Floor;
+use App\Models\Graph;
 use App\Models\User;
 use Doctrine\DBAL\Schema\Table;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
@@ -19,7 +21,6 @@ class InitController extends Controller
     static $nameToId = [];
     static $cabinetToWorkers = [];
     static $tableIdToPoints = [];
-    static $cabinetIdToType = [];
     static $current_id = 0;
 
     public function parseUserFile(String $file_name, int $level) {
@@ -153,14 +154,41 @@ class InitController extends Controller
                         "id" => $user_list[$i + 2],
                     ];
                 }
-                info($users_data);
-                info($cabinet_id);
-                info($time_from);
-                info($time_to);
-                info($name);
+                Event::add($users_data, $cabinet_id, $time_from, $time_to, $name);
             }
         }
     }
+
+    public function parseNodes() {
+        $content = file_get_contents(__DIR__ . "/../../../../src/graphs/floor_nodes");
+        $cabinets = explode("\n", $content);
+
+        $graph = new Graph();
+
+        foreach ($cabinets as $cabinet) {
+            $test = explode(";", $cabinet);
+            if (sizeof($test) == 6) {
+                list($cabinet_id, $point_x, $point_y, $floor, $type, $id) = $test;
+                $graph->addNodes($type, (int)$floor, (int)$point_x, (int)$point_y, $cabinet_id);
+            }
+        }
+        info(sizeof($graph->nodes));
+
+        $content = file_get_contents(__DIR__ . "/../../../../src/graphs/nodes");
+        $edges = explode("\n", $content);
+        foreach ($edges as $edge) {
+            $test = explode(";", $edge);
+            if (sizeof($test) == 2) {
+                list($from, $to) = $test;
+                $graph->addEdges((int)$from, (int)$to);
+            }
+        }
+        info($graph->nodes);
+        $graph->dejskta(22, 7, true, false);
+
+
+    }
+
     public function index(ApiRequest $request)
     {
         Redis::flushAll();
@@ -168,6 +196,7 @@ class InitController extends Controller
         self::parseFloors();
         self::parseCabinets();
         self::parseEvents();
+        self::parseNodes();
         return response()->json([
             'response' => 'ok'
         ]);

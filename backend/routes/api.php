@@ -22,4 +22,5 @@ Route::resource('/v1/event/add', 'Api\V1\EventAddController', ['only' => ['index
 Route::resource('/v1/event', 'Api\V1\EventController', ['only' => ['index', 'show']]);
 Route::resource('/v1/cabinet', 'Api\V1\CabinetController', ['only' => 'index']);
 Route::resource('/v1/init', 'Api\V1\InitController', ['only' => 'index']);
+Route::resource('/v1/route', 'Api\V1\RouteController', ['only' => 'index']);
 });
