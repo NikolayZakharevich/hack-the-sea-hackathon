@@ -39,7 +39,7 @@ class Floor {
         if ($filters) {
             foreach ($floor['cabinets'] as $key => $cabinet) {
                 $cabinet_id = $cabinet['id'];
-                $cabinet    = Cabinet::get($cabinet_id);
+                $cabinet    = Cabinet::get($cabinet_id, array_key_exists('level', $cabinet) ? $cabinet['level'] : 1);
                 if (!in_array($cabinet['type'], $filters)) {
                     unset($floor['cabinets'][$key]);
                 }

@@ -1,10 +1,10 @@
-cofepoint_1;1;cofepoint
+coffeepoint_1;1;coffeepoint
 girl_toilet_top_1;1;bathroom
 boy_toilet_top_1;1;bathroom
-116;1;sklad
-117;1;sklad
-118;1;sklad
-sklad;1;sklad
+116;1;warehouse
+117;1;warehouse
+118;1;warehouse
+warehouse;1;warehouse
 girl_toilet_bottom_1;1;bathroom
 boy_toilet_bottom_1;1;bathroom
 311;3;meeting_room
@@ -13,6 +13,6 @@ boy_toilet_bottom_1;1;bathroom
 314;3;meeting_room
 boy_toilet_top_3;3;bathroom
 girl_toilet_top_3;3;bathroom
-cofepoint_3;3;cofepoint
+coffeepoint_3;3;coffeepoint
 boy_toilet_bottom_3;3;bathroom
 girl_toilet_bottom_3;3;bathroom
