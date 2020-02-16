@@ -48,16 +48,8 @@ class RouteController extends Controller {
         $to = $request->get('to');
         $without_elevator =  $request->get('without_elevator');
         $without_stairs =  $request->get('without_stairs');
-        if ($without_elevator != null) {
-            $without_elevator = true;
-        } else {
-            $without_elevator = false;
-        }
-        if ($without_stairs != null) {
-            $without_stairs = true;
-        } else {
-            $without_stairs = false;
-        }
+        $without_elevator = (bool)$without_elevator;
+        $without_stairs = (bool)$without_stairs;
 
         $search_result = Search::searchRoute($from, $to);
 
